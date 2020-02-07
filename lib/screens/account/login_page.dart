@@ -7,6 +7,7 @@ import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,7 +21,17 @@ class _LoginPageState extends State<LoginPage> {
   String _password;
   bool _showPass = false;
   int statusCode = 0;
+  String _tokenFCM = '';
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
+
+  void initState() {
+    super.initState();
+    _firebaseMessaging.getToken().then((token) {
+      _tokenFCM = token;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: MenuBar(),
@@ -202,9 +213,10 @@ class _LoginPageState extends State<LoginPage> {
     // Validate will return true if is valid, or false if invalid.
     if (form.validate()) {
       String api =
-          'http://testapi.chieuphimquocgia.com.vn/api/LoginApp?Email=${Uri.encodeFull(_userId)}&Password=$_password';
+          'http://testapi.chieuphimquocgia.com.vn/api/LoginApp?Email=${Uri.encodeFull(_userId)}&Password=$_password&tokenFCM=$_tokenFCM';
 
       // var response = await http.post(api);
+      print(api);
       var response = await http.post(Uri.parse(api));
       print(response.body);
       if (response.statusCode == 200) {
@@ -215,6 +227,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         if (statusCode == 30) {
           User user = User.fromJson(parsed["User"]);
+          print(parsed["User"]);
           setUserInfo(prefs, user);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => HomeScreen()));
