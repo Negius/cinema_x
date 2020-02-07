@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/account/task/accountDetails.dart';
+import 'package:cinema_x/screens/account/task/changePassword.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -208,7 +209,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             maxLines: 1,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChangePasswordPage()));
+                          },
                         ),
                         SizedBox(
                           height: 3,

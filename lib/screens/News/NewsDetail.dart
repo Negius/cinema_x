@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/models/News.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +17,6 @@ class _NewsDetailState extends State<NewsDetail> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).primaryTextTheme;
-
     return Scaffold(
       endDrawer: MenuBar(),
       body: Stack(
@@ -40,8 +37,11 @@ class _NewsDetailState extends State<NewsDetail> {
                       switch (node.localName) {
                         case "custom_tag": // using this, you can handle custom tags in your HTML
                           return Column(children: children);
+                        default:
+                          return Column();
                       }
-                    }
+                    } else
+                      return Column();
                   },
                 ),
               ),
@@ -52,7 +52,7 @@ class _NewsDetailState extends State<NewsDetail> {
             left: 0.0,
             right: 0.0,
             child: AppBar(
-               title: Text(widget.news.title),
+              title: Text(widget.news.title),
               backgroundColor: Colors.red,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),

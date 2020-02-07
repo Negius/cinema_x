@@ -1,13 +1,8 @@
-import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/models/user.dart';
-import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/models/News.dart';
-import 'package:cinema_x/screens/details/MovieDetails.dart';
 import 'package:flutter/material.dart';
-import 'package:cinema_x/utils/menu_drawer.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListNews extends StatefulWidget {
@@ -17,8 +12,6 @@ class ListNews extends StatefulWidget {
 
 class _ListNews extends State<ListNews> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
-  int _current = 0;
   Future<List<News>> _listNews;
   List imgList;
   List nameList;

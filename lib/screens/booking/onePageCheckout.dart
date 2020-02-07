@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/payment/paymentIndex.dart';
@@ -10,6 +9,7 @@ import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
+import 'package:http/http.dart' as http;
 
 class CheckoutPage extends StatefulWidget {
   CheckoutPage(
@@ -330,35 +330,29 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   void checkOut(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var cFirstName = prefs.getString("firstName");
+    var cLastName = prefs.getString("lastName");
+    var cEmail = prefs.getString("email");
+    var cPhone = prefs.getString("phone");
+
     prefs.setInt("movieId", widget.movie.id);
     prefs.setString("movieName", widget.movie.name);
     prefs.setString("endTime",DateFormat("yyyyMMddHHmmss").format(widget.projectDateTime.add(Duration(minutes: widget.movie.duration))));
-    print(_current);
     switch (_current) {
       case 0:
         DateTime now = DateTime.now();
-        String vnp_CreateDate = DateFormat('yyyyMMddkkmmss').format(now);
+        String vnpCreateDate = DateFormat('yyyyMMddkkmmss').format(now);
         String ipAddress = await GetIp.ipAddress;
-        String _vnp_HashSecret = "IPCYRCERGNCBFGRYXUBYSWTDCEPHWGUZ";
-        String inforSendVNPay = prefs.getString("lastName") +
-            " " +
-            prefs.getString("firstName") +
-            ";" +
-            prefs.getString("email") +
-            ";" +
-            prefs.getString("phone");
-
+        String vnpHashSecret = "IPCYRCERGNCBFGRYXUBYSWTDCEPHWGUZ";
+        String inforSendVNPay = "$cLastName $cFirstName;$cEmail;$cPhone";
         String api = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html?";
         String _requestData = "";
-        Map<String, String> headers = {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        };
 
         Map<String, dynamic> body = {
           "vnp_Amount": widget.total * 100,
           "vnp_Command": "pay",
-          "vnp_CreateDate": vnp_CreateDate,
+          "vnp_CreateDate": vnpCreateDate,
           "vnp_CurrCode": "VND",
           "vnp_IpAddr": ipAddress,
           "vnp_Locale": "vn",
@@ -370,25 +364,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
           "vnp_TxnRef": widget.orderId.toString(),
           "vnp_Version": "2.0.0",
         };
-        _requestData = transformBody(body);
+        _requestData = transformBodyVNPay(body);
         body["vnp_IpAddr"] = Uri.encodeComponent(ipAddress);
         body["vnp_OrderInfo"] =
             Uri.encodeComponent(removeUnicode(inforSendVNPay));
         body["vnp_ReturnUrl"] =
             Uri.encodeComponent("http://172.16.80.120/CheckOut/VNPayResult");
 
-        var data = transformBody(body);
+        var data = transformBodyVNPay(body);
         var trimmed = _requestData.substring(0, _requestData.length - 1);
-        print(trimmed);
         var trimmed2 = data.substring(0, data.length - 1);
-        var vnpSecureHash = generateMd5(_vnp_HashSecret + trimmed);
+        var vnpSecureHash = generateMd5(vnpHashSecret + trimmed);
         api += trimmed2 +
             "&vnp_SecureHashType=MD5&vnp_SecureHash=" +
             vnpSecureHash;
-        print(api);
         // var response = await http.get(Uri.parse(api));
-        // print(response.statusCode);
-        // print(response.body);
 
         Navigator.push(
           context,
@@ -401,7 +391,69 @@ class _CheckoutPageState extends State<CheckoutPage> {
         break;
 
       case 1:
-      String api = "https://newsandbox.payoo.com.vn/v2/paynow/"; //Sandbox, thay = url thật sau khi test
+        String api =
+            "https://newsandbox.payoo.com.vn/v2/paynow/order/create"; //Sandbox, thay = url thật sau khi test
+
+        var planInfo =
+            "Phim: ${widget.movie.name}, Suất chiếu: ${DateFormat("HH:mm").format(widget.projectDateTime)}";
+
+        // var headers = {"content-type": "multipart/form-data"};
+        var data = {
+          "Session": widget.orderId.toString(),
+          "BusinessUsername": "iss_PhimQuocGia",
+          "OrderCashAmount": widget.total,
+          "OrderNo": widget.orderId,
+          "ShippingDays": 1,
+          "ShopBackUrl": "http://localhost:3813/CheckOut/PayooResult",
+          "ShopDomain": "http://localhost",
+          "ShopID": 1061,
+          "ShopTitle": "PhimQuocGia",
+          "StartShippingDate": DateFormat("dd/MM/yyyy").format(DateTime.now()),
+          "NotifyUrl": "",
+          "ValidityTime": DateFormat("yyyyMMddHHmmss")
+              .format(DateTime.now().add(Duration(days: 1))),
+          "OrderDescription": Uri.encodeComponent(planInfo),
+          "CustomerName": Uri.encodeComponent("$cLastName $cFirstName"),
+          "CustomerPhone": cPhone,
+          "CustomerEmail": cEmail,
+          "CustomerCity": "",
+          "CustomerAddress": "",
+        };
+
+        String checksumKey = "2973880262d35aeff161c1401163e68d";
+        // String APIUsername = "iss_PhimQuocGia_BizAPI";
+        // String APIPassword = "9zom6iIJvUjNJSjy";
+        // String APISignature =
+        //     "3m0P3urXfwsxDgPlNJ29oR5GnvXTottopIERGVkT5oUAMERSLY6KjxZM4T8WB1s3";
+
+        var xml = transformBodyPayoo(data);
+
+        var checkSum = generateSHA512(checksumKey + xml);
+
+        var body = {
+          "data": xml,
+          "checksum": checkSum,
+          "refer": "http://localhost",
+          "restrict": "0",
+          // "method":"Bank-account",
+          // "bank":"ABB",
+        };
+        print(checkSum);
+        var response = await http.post(Uri.parse(api), body: body);
+        if (response.statusCode == 200) {
+          var resultData = json.decode(response.body);
+          if (resultData["result"] == "success") {
+            var url = Uri.decodeFull(resultData["order"]["payment_url"]);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentIndexPage(
+                  url: url,
+                ),
+              ),
+            );
+          }
+        }
         break;
       default:
         break;
@@ -415,7 +467,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return hex.encode(digest.bytes);
   }
 
-  String transformBody(Map<String, dynamic> input) {
+  String generateSHA512(String input) {
+    var bytes = new Utf8Encoder().convert(input);
+    var sha512 = crypto.sha512;
+    var digest = sha512.convert(bytes);
+    return hex.encode(digest.bytes);
+  }
+
+  String transformBodyVNPay(Map<String, dynamic> input) {
     var result = "";
     input.entries.forEach((entry) {
       result += entry.key +
@@ -424,6 +483,39 @@ class _CheckoutPageState extends State<CheckoutPage> {
           "&";
     });
     return result;
+  }
+
+  String transformBodyPayoo(Map<String, dynamic> input) {
+    try {
+      if (input == null) throw Exception("Order parameters are not set.");
+      String part1 = """<shops>
+                    <shop>
+                      <session>${input["Session"]}</session>
+                      <username>${input["BusinessUsername"]}</username>
+                      <shop_id>${input["ShopID"]}</shop_id>
+                      <shop_title>${input["ShopTitle"]}</shop_title>
+                      <shop_domain>${input["ShopDomain"]}</shop_domain>
+                      <shop_back_url>${input["ShopBackUrl"]}</shop_back_url>
+                      <order_no>${input["OrderNo"]}</order_no>
+                      <order_cash_amount>${input["OrderCashAmount"]}</order_cash_amount>
+                      <order_ship_date>${input["StartShippingDate"]}</order_ship_date>
+                      <order_ship_days>${input["ShippingDays"]}</order_ship_days>
+                      <order_description>${input["OrderDescription"]}</order_description>
+                      <notify_url>${input["NotifyUrl"]}</notify_url>""";
+      String part2 = """<customer>
+                        <name>${input["CustomerName"]}</name>
+                        <phone>${input["CustomerPhone"]}</phone>
+                        <address>${input["CustomerAddress"]}</address>
+                        <city>${input["CustomerCity"]}</city>
+                        <email>${input["CustomerEmail"]}</email>
+                      </customer>
+                    </shop>
+                  </shops>""";
+
+      return part1 + (input["ValidityTime"] ?? "") + part2;
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 
   String removeUnicode(String text) {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cinema_x/screens/News/AllNews.dart';
 import 'package:cinema_x/screens/account/login_page.dart';
