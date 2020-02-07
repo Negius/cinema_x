@@ -5,7 +5,6 @@ import 'package:cinema_x/screens/account/userInfo.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cinema_x/widget/messaging_widget.dart';
 
 import './FilmComming.dart' as Fcomming;
 import './FilmShowing.dart' as Fshowing;
@@ -57,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
             width: double.infinity,
             child: ListView(children: <Widget>[
               imageSliderCarousel(),
-              tabNotifications(),
               tabFilms(),
               tabNews(),
             ]),
@@ -93,13 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       //)
-    );
-  }
-
-  Widget tabNotifications() {
-    return Container(
-        height: 0,
-        child: MessagingWidget()
     );
   }
 
