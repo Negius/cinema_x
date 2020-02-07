@@ -330,7 +330,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   void checkOut(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    prefs.setInt("movieId", widget.movie.id);
+    prefs.setString("movieName", widget.movie.name);
+    prefs.setString("endTime",DateFormat("yyyyMMddHHmmss").format(widget.projectDateTime.add(Duration(minutes: widget.movie.duration))));
     print(_current);
     switch (_current) {
       case 0:
