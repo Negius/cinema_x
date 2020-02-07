@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cinema_x/screens/home/Home.dart';
-import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +32,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
     return Scaffold(
       // endDrawer: MenuBar(),
       // key: _scaffoldKey,
@@ -42,6 +42,8 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var data = json.decode(snapshot.data);
+              if (data["data"] == null || data["code"] == null)
+                return errorScreen(context);
               return resultScreen(context, data["data"]["txnId"], data["code"],
                   data["message"]);
             } else {
@@ -52,7 +54,8 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
         SizedBox(
           height: 75,
         ),
-        FloatingActionButton(
+        FlatButton(
+          color: Colors.redAccent,
           onPressed: () {
             setState(() {
               Navigator.push(
@@ -63,7 +66,6 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
               );
             });
           },
-          backgroundColor: Colors.redAccent,
           child: Text(
             "Trang chủ",
             style: TextStyle(fontSize: 20, color: Colors.white),
@@ -127,7 +129,30 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
 
   Widget errorScreen(BuildContext context) {
     print("failed");
-    return Container();
+    return Container(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).copyWith().size.width / 10,
+            ),
+            Container(
+              child: Icon(
+                Icons.error,
+                size: 200,
+                color: Colors.red,
+              ),
+            ),
+            Text(
+              "Đã có lỗi xảy ra",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Map<String, String> decode(String url) {

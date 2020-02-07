@@ -318,10 +318,6 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       //     "http://testapi.chieuphimquocgia.com.vn/api/UpdateCustomer?customerId=$_id&FirstName=${Uri.encodeComponent(formValues["_fName"])}&LastName=${Uri.encodeComponent(formValues["_lName"])}&Mobile=${Uri.encodeComponent(formValues["_phone"])}&Address=${Uri.encodeComponent(formValues["_address"])}";
       var api = "http://testapi.chieuphimquocgia.com.vn/api/UpdateCustomer?";
       print(formValues);
-      var headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      };
       var body = [
         "customerId=$_id",
         "FirstName=${Uri.encodeComponent(formValues["_fName"])}",

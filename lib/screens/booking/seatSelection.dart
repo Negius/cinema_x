@@ -456,16 +456,13 @@ class _SeatSelectionState extends State<SeatSelection> {
     seatSelected.forEach((seat) {
       if (seat["row"] == row) sameRow.add(seat);
     });
-    print(sameRow);
     if (sameRow.isNotEmpty) {
       colMap = sameRow.map((value) => value["column"]).toList();
-      print(colMap);
       // if ((colMap.contains(col + 2) && !colMap.contains(col + 1)) ||
       //     (colMap.contains(col - 2) && !colMap.contains(col - 1)))
       type == 0 ? colMap.add(col) : colMap.remove(col);
       colMap = colMap.toSet().toList();
       colMap.sort();
-      print(colMap);
       for (var i = 1; i < colMap.length; i++) {
         if (colMap[i] - colMap[i - 1] > 1) {
           result = false;
@@ -558,7 +555,6 @@ class _SeatSelectionState extends State<SeatSelection> {
 
   void testPayment(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(seatSelected[0]);
     var listChairValueF1 = seatSelected.map((s) => s["label"]).join(", ");
     var seatsF1 = seatSelected.map((s) => s["seat"]).join(", ");
     String api = "http://testapi.chieuphimquocgia.com.vn/api/CreateOrder";
@@ -579,11 +575,8 @@ class _SeatSelectionState extends State<SeatSelection> {
       "CustomerPhone": prefs.getString("phone") ?? "",
       "PaymentMethodSystemName": "VNPAY"
     };
-    print(body);
     var response = await http.post(Uri.parse(api),
         headers: headers, body: json.encode(body));
-    print(response.statusCode);
-    print(response.body);
     var parsed = json.decode(response.body);
     var orderId = parsed["OrderId"];
     var total = (parsed["OrderTotal"] as double).toInt() ?? 0;

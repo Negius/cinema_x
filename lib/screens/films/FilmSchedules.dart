@@ -79,7 +79,6 @@ class _ListFilms extends State<FilmSchedule> {
                               }
                             }
                           }
-                          print(splittedSessionList);
                           return Card(
                             child: Row(
                               children: <Widget>[
