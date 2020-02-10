@@ -342,16 +342,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<Null> _selectDate(BuildContext context) async {
-    // final DateTime picked = await showDatePicker(
-    //     context: context,
-    //     initialDate: selectedDate,
-    //     firstDate: DateTime(1950, 8),
-    //     lastDate: DateTime(2101));
-    // if (picked != null && picked != selectedDate)
-    //   setState(() {
-    //     selectedDate = picked;
-    //     birthdayController.text = df.format(picked.toLocal());
-    //   });
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -360,7 +350,7 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).copyWith().size.height / 2,
+                  height: MediaQuery.of(context).copyWith().size.height / 2 - 50,
                   child: Localizations.override(
                     context: context,
                     locale: const Locale('vi'),

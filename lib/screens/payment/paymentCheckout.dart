@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 
 class PaymentCheckoutPage extends StatefulWidget {
   @override
@@ -213,7 +214,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).unfocus();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     return Scaffold(
       // endDrawer: MenuBar(),
       // key: _scaffoldKey,
@@ -252,29 +253,6 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         )
-        // new Positioned(
-        //   top: 0.0,1
-        //   left: 0.0,
-        //   right: 0.0,
-        //   child: AppBar(
-        //     backgroundColor: Colors.transparent,
-        //     leading: IconButton(
-        //       icon: Icon(Icons.home),
-        //       onPressed: () => Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (context) => HomeScreen(),
-        //         ),
-        //       ),
-        //     ),
-        //     actions: <Widget>[
-        //       IconButton(
-        //         icon: Icon(Icons.menu),
-        //         onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ]),
     );
   }

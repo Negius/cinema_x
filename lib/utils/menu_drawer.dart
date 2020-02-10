@@ -101,7 +101,7 @@ class _MenuBarState extends State<MenuBar> {
                       ),
                       AutoSizeText.rich(
                         new TextSpan(
-                            style: _textTheme.title.copyWith(
+                            style: _textTheme.headline6.copyWith(
                               color: Colors.white,
                               fontSize: 18,
                             ),
@@ -138,7 +138,7 @@ class _MenuBarState extends State<MenuBar> {
               children: <Widget>[
                 Text(
                   "Thẻ thành viên",
-                  style: _textTheme.title.copyWith(
+                  style: _textTheme.headline6.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.pink,
@@ -184,7 +184,7 @@ class _MenuBarState extends State<MenuBar> {
                           ),
                           Text(
                             pointCard.toString() ?? "0",
-                            style: _textTheme.body1
+                            style: _textTheme.bodyText2
                                 .copyWith(color: Colors.white, fontSize: 30),
                           ),
                         ],
@@ -201,7 +201,7 @@ class _MenuBarState extends State<MenuBar> {
                           ),
                           Text(
                             pointReward.toString() ?? "0",
-                            style: _textTheme.body1
+                            style: _textTheme.bodyText2
                                 .copyWith(color: Colors.white, fontSize: 30),
                           ),
                         ],
@@ -229,7 +229,7 @@ class _MenuBarState extends State<MenuBar> {
                     title: Center(
                       child: Text(
                         "Đặt vé theo phim",
-                        style: _textTheme.title.copyWith(
+                        style: _textTheme.headline6.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -263,7 +263,7 @@ class _MenuBarState extends State<MenuBar> {
                     title: Center(
                       child: Text(
                         "Lịch chiếu",
-                        style: _textTheme.title.copyWith(
+                        style: _textTheme.headline6.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -304,7 +304,7 @@ class _MenuBarState extends State<MenuBar> {
                     title: Center(
                       child: Text(
                         "Đăng xuất",
-                        style: _textTheme.title.copyWith(
+                        style: _textTheme.headline6.copyWith(
                           fontSize: 16,
                           color: Colors.white,
                         ),
@@ -351,7 +351,7 @@ class _MenuBarState extends State<MenuBar> {
               title: Center(
                 child: Text(
                   "Đăng nhập",
-                  style: _textTheme.title.copyWith(
+                  style: _textTheme.headline6.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -372,7 +372,7 @@ class _MenuBarState extends State<MenuBar> {
             title: Center(
               child: Text(
                 "Đặt vé theo phim",
-                style: _textTheme.title.copyWith(
+                style: _textTheme.headline6.copyWith(
                   fontSize: 16,
                   color: Colors.white,
                 ),
@@ -418,7 +418,7 @@ class _MenuBarState extends State<MenuBar> {
                   ),
                   Text(
                     "Trang chủ",
-                    style: _textTheme.title.copyWith(
+                    style: _textTheme.headline6.copyWith(
                       fontSize: 12,
                       color: Colors.white,
                     ),
@@ -446,7 +446,7 @@ class _MenuBarState extends State<MenuBar> {
                   ),
                   Text(
                     "Thành viên",
-                    style: _textTheme.title.copyWith(
+                    style: _textTheme.headline6.copyWith(
                       fontSize: 12,
                       color: Colors.white,
                     ),
@@ -474,7 +474,7 @@ class _MenuBarState extends State<MenuBar> {
                   ),
                   Text(
                     "Tin tức & ưu đãi",
-                    style: _textTheme.title.copyWith(
+                    style: _textTheme.headline6.copyWith(
                       fontSize: 12,
                       color: Colors.white,
                     ),

@@ -47,7 +47,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
       children: [
         Text(
           widget.movie.name,
-          style: textTheme.title,
+          style: textTheme.headline6,
         ),
         SizedBox(height: 8.0),
         Row(children: [_buildCategoryChips(textTheme)]),
@@ -74,7 +74,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
                 child: AutoSizeText(
                   "ĐẶT VÉ",
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0),
@@ -99,7 +99,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
                 child: AutoSizeText(
                   "Trailer",
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0),

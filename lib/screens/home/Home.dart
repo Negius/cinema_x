@@ -5,6 +5,7 @@ import 'package:cinema_x/screens/account/userInfo.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 import './FilmComming.dart' as Fcomming;
 import './FilmShowing.dart' as Fshowing;
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     return new Scaffold(
       endDrawer: MenuBar(),
       key: _scaffoldKey,

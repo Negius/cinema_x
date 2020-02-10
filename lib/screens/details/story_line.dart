@@ -21,11 +21,11 @@ class _StorylineState extends State<Storyline> {
         Text(
           'Giới thiệu',
           style:
-              textTheme.subhead.copyWith(fontSize: 18.0, color: Colors.white),
+              textTheme.subtitle1.copyWith(fontSize: 18.0, color: Colors.white),
         ),
         Text(
           widget.storyline,
-          style: textTheme.body1.copyWith(
+          style: textTheme.bodyText2.copyWith(
             color: Colors.white,
             fontSize: 16.0,
           ),
