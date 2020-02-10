@@ -23,13 +23,13 @@ class _LoginPageState extends State<LoginPage> {
   int statusCode = 0;
   String _tokenFCM = '';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  
   @override
-
   void initState() {
     super.initState();
-    _firebaseMessaging.getToken().then((token) {
-      _tokenFCM = token;
-    });
+    // _firebaseMessaging.getToken().then((token) {
+    //   _tokenFCM = token;
+    // });
   }
 
   Widget build(BuildContext context) {

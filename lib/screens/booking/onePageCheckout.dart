@@ -78,7 +78,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         AutoSizeText(
                           "${widget.movie.name}",
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
                                 color: Colors.black,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w700,
@@ -468,9 +468,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   String generateSHA512(String input) {
-    var bytes = new Utf8Encoder().convert(input);
+    List<int> bytes = new Utf8Encoder().convert(input);
     var sha512 = crypto.sha512;
-    var digest = sha512.convert(bytes);
+    var digest = sha512.convert(input.codeUnits);
+    // var digest = sha512.convert(bytes);
     return hex.encode(digest.bytes);
   }
 

@@ -80,7 +80,7 @@ Thể loại: ${widget.movie.categories.map((c) => ReCase(c).sentenceCase).join(
 
 Diễn viên: ${widget.movie.actorsName.join(", ")}
 """,
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
                                 color: Colors.white,
                                 fontSize: 16.0,
                               ),

@@ -149,11 +149,11 @@ class _SeatSelectionState extends State<SeatSelection> {
                                   "MÀN HÌNH",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subhead
+                                      .subtitle1
                                       .copyWith(
                                           fontSize: Theme.of(context)
                                                   .textTheme
-                                                  .subhead
+                                                  .subtitle1
                                                   .fontSize *
                                               scale,
                                           color:
@@ -500,7 +500,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                         "Số ghế đã chọn: ${seatSelected.length}",
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle
+                            .subtitle2
                             .copyWith(fontWeight: FontWeight.w700),
                       ),
                       Expanded(
@@ -509,7 +509,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                           "Danh sách ghế: ${seatSelected.map((s) => s["label"]).join(", ")}",
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle
+                              .subtitle2
                               .copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
