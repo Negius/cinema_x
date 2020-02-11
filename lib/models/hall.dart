@@ -1,12 +1,12 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/seat.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<List<Map>>> fetchApiSeats(int planId) async {
-  String api =
-      "http://testapi.chieuphimquocgia.com.vn/api/GetSeats?PlanId=${planId.toString()}";
-  final response = await http.get(api);
+  String url = NccUrl.getSeat + planId.toString();
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
     List<Seat> seatList = new List<Seat>();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -9,12 +10,25 @@ class Schedule {
   int planCinemaId;
   DateTime projectDateTime;
   int roomId;
+
+  Schedule({this.id, this.planCinemaId, this.projectDateTime, this.roomId});
+
+  factory Schedule.fromJson(Map<String, dynamic> json) {
+    return Schedule(
+      id: json['id'] as int,
+      planCinemaId: json['planCinemaId'] as int,
+      projectDateTime: json['projectDateTime'] != null
+          ? json['projectDateTime'] as DateTime
+          : DateTime.now(),
+      roomId: json['roomId'] as int,
+    );
+  }
 }
 
 Future<List<Map<String, dynamic>>> fetchSchedules() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/GetAllSession";
+  String url = NccUrl.getSchedules;
   List<Map<String, dynamic>> listSchedule = [];
-  var response = await http.get(api);
+  var response = await http.get(url);
   if (response.statusCode == 200) {
     var body = json.decode(response.body);
     List<dynamic> listDay = body["listday"].toList().map((t) {

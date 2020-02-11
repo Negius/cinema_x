@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:flutter/material.dart';
 
 class Storyline extends StatefulWidget {
@@ -19,13 +20,13 @@ class _StorylineState extends State<Storyline> {
       children: [
         SizedBox(height: 8.0),
         Text(
-          'Giới thiệu',
+          CommonString.introduction,
           style:
-              textTheme.subtitle1.copyWith(fontSize: 18.0, color: Colors.white),
+              textTheme.subhead.copyWith(fontSize: 18.0, color: Colors.white),
         ),
         Text(
           widget.storyline,
-          style: textTheme.bodyText2.copyWith(
+          style: textTheme.body1.copyWith(
             color: Colors.white,
             fontSize: 16.0,
           ),
@@ -42,10 +43,13 @@ class _StorylineState extends State<Storyline> {
             children: <Widget>[
               !isCollapsed
                   ? Text(
-                      "Thu gọn",
+                      CommonString.trailerLess,
                       style: TextStyle(color: Colors.red),
                     )
-                  : Text("Xem thêm", style: TextStyle(color: Colors.red))
+                  : Text(
+                      CommonString.trailerMore,
+                      style: TextStyle(color: Colors.red),
+                    ),
             ],
           ),
         ),

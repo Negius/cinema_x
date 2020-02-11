@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/models/Schedule.dart';
 import 'package:cinema_x/screens/booking/seatSelection.dart';
@@ -33,7 +34,7 @@ class _ListFilms extends State<FilmSchedule> {
               initialIndex: 0,
               child: Scaffold(
                 appBar: new AppBar(
-                  title: new Text('Lịch chiếu phim'),
+                  title: new Text(CommonString.schedule),
                   actions: <Widget>[
                     IconButton(
                       icon: Icon(Icons.menu),

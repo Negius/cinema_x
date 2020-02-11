@@ -30,6 +30,7 @@ class _ShowingState extends State<Comming> {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      padding: EdgeInsets.only(top: 5),
       color: Colors.blueGrey[900],
       child: imgSlider(context),
     );
@@ -47,7 +48,7 @@ class _ShowingState extends State<Comming> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 CarouselSlider(
-                  height: 410.0,
+                  height: 405.0,
                   initialPage: 0,
                   enlargeCenterPage: true,
                   onPageChanged: (index) {

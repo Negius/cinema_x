@@ -1,9 +1,11 @@
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/News/AllNews.dart';
 import 'package:cinema_x/screens/account/login_page.dart';
 import 'package:cinema_x/screens/account/userInfo.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 
@@ -18,14 +20,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  final List imgList = [
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/ch%e1%bb%8b%20ch%E1%BB%8B%20em%20em.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/1jumanji.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/2m%e1%ba%aft%20bi%E1%BA%BFc.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/1.anh%20trai%20y%C3%AAu%20qu%C3%A1i.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/2.%20FROZEN.jpg',
-  ];
 
   final List imgSlider = [
     'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/ch%e1%bb%8b%20ch%E1%BB%8B%20em%20em.jpg',
@@ -124,13 +118,13 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: TabBar(
                 tabs: [
                   Tab(
-                    text: 'ĐANG CHIẾU',
+                    text: CommonString.showing,
                   ),
                   Tab(
-                    text: 'SẮP CHIẾU',
+                    text: CommonString.coming,
                   ),
                   Tab(
-                    text: 'ĐẶC BIỆT',
+                    text: CommonString.special,
                   ),
                 ],
               ),
@@ -156,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
         length: 3,
         child: Scaffold(
           appBar: new AppBar(
-            title: Text("Tin tức"),
+            title: Text(ReCase(CommonString.news).sentenceCase),
             backgroundColor: Colors.red,
             automaticallyImplyLeading: false,
             actions: <Widget>[
@@ -172,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        "Tất cả",
+                        CommonString.all,
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w500),
                       ),

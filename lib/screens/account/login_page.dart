@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
+import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:cinema_x/screens/account/register_page.dart';
@@ -7,7 +9,6 @@ import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,14 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   bool _showPass = false;
   int statusCode = 0;
   String _tokenFCM = '';
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  
+
   @override
   void initState() {
     super.initState();
-    // _firebaseMessaging.getToken().then((token) {
-    //   _tokenFCM = token;
-    // });
   }
 
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text('Đăng nhập'),
+        title: new Text(CommonString.login),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -73,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: "Email hoặc Tên đăng nhập",
+                    labelText: CommonString.emailID,
                     labelStyle:
                         new TextStyle(color: Colors.black26, fontSize: 15),
                     focusedBorder: new UnderlineInputBorder(
@@ -89,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                 child: Visibility(
                   child: Text(
-                    "Tài khoản không tồn tại!",
+                    ErrorId.notExisted,
                     style: TextStyle(color: Colors.red),
                   ),
                   visible: (statusCode == 40),
@@ -105,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       obscureText: !_showPass,
                       decoration: InputDecoration(
-                        labelText: "Mật khẩu",
+                        labelText: CommonString.password,
                         labelStyle:
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
@@ -119,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                         onTap: onToggleShowPass,
                         child: Text(
-                          _showPass ? "Ẩn" : "Hiện",
+                          _showPass ? CommonString.showpassF : CommonString.showpassT,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -132,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Visibility(
                   child: Text(
-                    "Mật khẩu không chính xác!",
+                    ErrorPassword.wrongPassword,
                     style: TextStyle(color: Colors.red),
                   ),
                   visible: (statusCode == 50),
@@ -166,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     InkWell(
                       child: Text(
-                        "Đăng ký tài khoản",
+                        CommonString.register,
                         style: TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       onTap: () {
@@ -177,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     Text(
-                      "Quên mật khẩu?",
+                      CommonString.forgotPass,
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
@@ -188,15 +185,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  pushToSave() {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Login thành công"),
-      ),
-    );
-    //print("Hello");
   }
 
   void onToggleShowPass() {
@@ -212,13 +200,9 @@ class _LoginPageState extends State<LoginPage> {
 
     // Validate will return true if is valid, or false if invalid.
     if (form.validate()) {
-      String api =
-          'http://testapi.chieuphimquocgia.com.vn/api/LoginApp?Email=${Uri.encodeFull(_userId)}&Password=$_password&tokenFCM=$_tokenFCM';
-
-      // var response = await http.post(api);
-      print(api);
-      var response = await http.post(Uri.parse(api));
-      print(response.body);
+      String url = NccUrl.login +
+          "Email=${Uri.encodeFull(_userId)}&Password=$_password&tokenFCM=$_tokenFCM";
+      var response = await http.post(Uri.parse(url));
       if (response.statusCode == 200) {
         Map parsed = json.decode(response.body);
         setState(() {

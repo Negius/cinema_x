@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/details/MovieDetails.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _ListFilms extends State<FilmShowing> {
       endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text('Chọn phim của bạn'),
+        title: new Text(CommonString.chooseMovie),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -92,7 +93,8 @@ class _ListFilms extends State<FilmShowing> {
                                       DateTime.parse(data.premieredDay),
                                     ),
                                   ),
-                                  Text(data.duration.toString() + " phút"),
+                                  Text(CommonString.duration.replaceAll(
+                                      "_TL_", data.duration.toString())),
                                   Row(
                                     children: <Widget>[
                                       AutoSizeText(

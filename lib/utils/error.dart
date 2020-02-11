@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:flutter/material.dart';
 
 class ErrorPage extends StatelessWidget {
@@ -8,12 +9,12 @@ class ErrorPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: <Widget>[
-              Text("Đã có lỗi xảy ra"),
+              Text(CommonString.commonError),
               FloatingActionButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Quay lại"),
+                child: Text(CommonString.back),
               )
             ],
           ),

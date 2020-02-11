@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/models/Session.dart';
 import 'package:cinema_x/screens/booking/seatSelection.dart';
@@ -136,7 +137,7 @@ class _BookingPageState extends State<BookingPage> {
                           height: 20,
                         ),
                         Text(
-                          "Chọn ca chiếu:",
+                          CommonString.chooseSession,
                           style: TextStyle(fontSize: 30),
                         ),
                         SizedBox(

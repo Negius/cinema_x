@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/models/hall.dart';
 import 'package:cinema_x/models/palette.dart';
@@ -39,7 +40,7 @@ class _SeatSelectionState extends State<SeatSelection> {
   int numOfColumns = 1;
   Future<List<Map>> _seatMap;
   final SnackBar invalidSeatChange = SnackBar(
-    content: Text("Không được có khoảng trống giữa các ghế đã chọn"),
+    content: Text(CommonString.seatNoEmptySpace),
   );
   @override
   void initState() {
@@ -70,10 +71,6 @@ class _SeatSelectionState extends State<SeatSelection> {
     }
   }
 
-  String addS(value) {
-    return value > 1 ? "s" : "";
-  }
-
   double scale = 1;
   double previousScale = 1;
   double startScale = 1;
@@ -96,7 +93,7 @@ class _SeatSelectionState extends State<SeatSelection> {
     return Scaffold(
 //      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Chọn vị trí ngồi"),
+        title: Text(CommonString.selectSeat),
         elevation: 0,
       ),
       body: Container(
@@ -138,22 +135,15 @@ class _SeatSelectionState extends State<SeatSelection> {
                                 padding: EdgeInsets.only(bottom: 12),
                                 width: constraint.maxWidth,
                                 alignment: Alignment.center,
-                                // decoration: BoxDecoration(
-                                //     border: Border(
-                                //         bottom: BorderSide(
-                                //             color: Palette.getContrastColor(
-                                //                     context)
-                                //                 .withOpacity(0.3),
-                                //             width: 2))),
                                 child: Text(
-                                  "MÀN HÌNH",
+                                  CommonString.screen,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle1
+                                      .subhead
                                       .copyWith(
                                           fontSize: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle1
+                                                  .subhead
                                                   .fontSize *
                                               scale,
                                           color:
@@ -176,16 +166,6 @@ class _SeatSelectionState extends State<SeatSelection> {
                                     ),
                                   ),
                                 ),
-                                // child: Visibility(
-                                //   child: Center(
-                                //     child: Text(
-                                //       "Không được có ghế trống giữa các ghế đã chọn",
-                                //       style: TextStyle(
-                                //           color: Colors.red, fontSize: 16),
-                                //     ),
-                                //   ),
-                                //   visible: !canChangeSeat,
-                                // ),
                               ),
                               Container(
                                 padding: EdgeInsets.only(left: 16, right: 16),
@@ -236,7 +216,10 @@ class _SeatSelectionState extends State<SeatSelection> {
                           SizedBox(
                             width: 10,
                           ),
-                          AutoSizeText("Ghế thường", maxLines: 1,),
+                          AutoSizeText(
+                            CommonString.seatNormal,
+                            maxLines: 1,
+                          ),
                         ],
                       ),
                       Row(
@@ -249,7 +232,10 @@ class _SeatSelectionState extends State<SeatSelection> {
                           SizedBox(
                             width: 10,
                           ),
-                          AutoSizeText("Ghế VIP", maxLines: 1,),
+                          AutoSizeText(
+                            CommonString.seatVip,
+                            maxLines: 1,
+                          ),
                         ],
                       ),
                       Row(
@@ -262,7 +248,10 @@ class _SeatSelectionState extends State<SeatSelection> {
                           SizedBox(
                             width: 10,
                           ),
-                          AutoSizeText("Ghế đôi", maxLines: 1,),
+                          AutoSizeText(
+                            CommonString.seatCouple,
+                            maxLines: 1,
+                          ),
                         ],
                       ),
                     ],
@@ -299,7 +288,10 @@ class _SeatSelectionState extends State<SeatSelection> {
                             SizedBox(
                               width: 10,
                             ),
-                            AutoSizeText("Ghế đã mua", maxLines: 1,),
+                            AutoSizeText(
+                              CommonString.seatBought,
+                              maxLines: 1,
+                            ),
                           ],
                         ),
                       ),
@@ -315,7 +307,10 @@ class _SeatSelectionState extends State<SeatSelection> {
                             SizedBox(
                               width: 10,
                             ),
-                            AutoSizeText("Ghế đang chọn", maxLines: 1,),
+                            AutoSizeText(
+                              CommonString.seatSelecting,
+                              maxLines: 1,
+                            ),
                           ],
                         ),
                       ),
@@ -377,7 +372,8 @@ class _SeatSelectionState extends State<SeatSelection> {
                                               color: Colors.white,
                                             ),
                                           )
-                                        : Icon(Icons.close, color: Colors.white),
+                                        : Icon(Icons.close,
+                                            color: Colors.white),
                                   )
                                 : null,
                           ),
@@ -497,19 +493,19 @@ class _SeatSelectionState extends State<SeatSelection> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "Số ghế đã chọn: ${seatSelected.length}",
+                        "${CommonString.seatSelectedAmount}: ${seatSelected.length}",
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle2
+                            .subtitle
                             .copyWith(fontWeight: FontWeight.w700),
                       ),
                       Expanded(
                         flex: 1,
                         child: Text(
-                          "Danh sách ghế: ${seatSelected.map((s) => s["label"]).join(", ")}",
+                          "${CommonString.seatSelected}: ${seatSelected.map((s) => s["label"]).join(", ")}",
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle2
+                              .subtitle
                               .copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
@@ -523,7 +519,7 @@ class _SeatSelectionState extends State<SeatSelection> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    testPayment(context);
+                    createOrder(context);
                   });
                 },
                 child: Container(
@@ -531,7 +527,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                   width: 100,
                   alignment: Alignment.center,
                   child: Text(
-                    "Thanh toán",
+                    CommonString.checkout,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                   decoration: const BoxDecoration(
@@ -553,11 +549,11 @@ class _SeatSelectionState extends State<SeatSelection> {
     );
   }
 
-  void testPayment(BuildContext context) async {
+  void createOrder(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var listChairValueF1 = seatSelected.map((s) => s["label"]).join(", ");
     var seatsF1 = seatSelected.map((s) => s["seat"]).join(", ");
-    String api = "http://testapi.chieuphimquocgia.com.vn/api/CreateOrder";
+    String url = NccUrl.createOrder;
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -573,9 +569,10 @@ class _SeatSelectionState extends State<SeatSelection> {
       "CustomerLastName": prefs.getString("lastName") ?? "",
       "CustomerEmail": prefs.getString("email") ?? "",
       "CustomerPhone": prefs.getString("phone") ?? "",
-      "PaymentMethodSystemName": "VNPAY"
+      "PaymentMethodSystemName":
+          "VNPAY" //TODO: implement different payment system names?
     };
-    var response = await http.post(Uri.parse(api),
+    var response = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(body));
     var parsed = json.decode(response.body);
     var orderId = parsed["OrderId"];

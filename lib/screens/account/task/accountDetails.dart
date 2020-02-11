@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/account/register_success.dart';
-import 'package:cinema_x/screens/payment/validate_error.dart';
+import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,7 @@ class AccountDetailsPage extends StatefulWidget {
 class _AccountDetailsPageState extends State<AccountDetailsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  DateFormat df = new DateFormat("dd/MM/yyyy");
-  bool _autoValidate = false;
+
   var formFields = {
     "_email": "Email",
     "_fName": "Tên",
@@ -26,7 +26,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
     "_phone": "Điện thoại",
     "_address": "Địa chỉ",
   };
+
   var _id = "";
+
   var formValues = {
     "_fName": "",
     "_lName": "",
@@ -34,8 +36,12 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
     "_address": "",
     "_gender": "",
   };
+
   Future<Map<String, String>> _initValues;
+  DateFormat df = new DateFormat("dd/MM/yyyy");
   bool loading = true;
+  bool _autoValidate = false;
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +57,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       key: _scaffoldKey,
       endDrawer: MenuBar(),
       appBar: new AppBar(
-        title: new Text('Thông tin chi tiết'),
+        title: new Text(CommonString.detailedInfo),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -79,7 +85,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                           color: Color.fromRGBO(218, 214, 204, 1),
                           child: AutoSizeText(
-                            "THÔNG TIN TÀI KHOẢN",
+                            CommonString.accountInfo,
                             maxLines: 1,
                             minFontSize: 20,
                             style: TextStyle(
@@ -94,7 +100,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                           color: Color.fromRGBO(218, 214, 204, 1),
                           child: AutoSizeText(
-                            "THÔNG TIN THÊM",
+                            CommonString.additionalInfo,
                             maxLines: 1,
                             minFontSize: 20,
                             style: TextStyle(
@@ -134,7 +140,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  "Giới tính",
+                                  CommonString.gender,
                                   style: TextStyle(color: Colors.red),
                                 ),
                                 Container(
@@ -146,13 +152,13 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                           value: "M",
                                           onChanged: null,
                                         ),
-                                        Text("Nam"),
+                                        Text(CommonString.male),
                                         Radio(
                                           groupValue: formValues["_gender"],
                                           value: "F",
                                           onChanged: null,
                                         ),
-                                        Text("Nữ"),
+                                        Text(CommonString.female),
                                       ],
                                     ))
                               ]),
@@ -163,7 +169,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                           color: Color.fromRGBO(218, 214, 204, 1),
                           child: AutoSizeText(
-                            "LIÊN HỆ",
+                            CommonString.contact,
                             maxLines: 1,
                             minFontSize: 20,
                             style: TextStyle(
@@ -185,7 +191,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                   borderRadius: new BorderRadius.circular(5)),
                               color: Colors.redAccent,
                               child: AutoSizeText(
-                                "Lưu thông tin",
+                                CommonString.saveInfo,
                                 minFontSize: 18,
                                 maxLines: 1,
                                 style: TextStyle(
@@ -204,7 +210,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                   borderRadius: new BorderRadius.circular(5)),
                               color: Colors.grey,
                               child: AutoSizeText(
-                                "Quay lại",
+                                CommonString.back,
                                 minFontSize: 18,
                                 maxLines: 1,
                                 style: TextStyle(
@@ -314,10 +320,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
     final form = _formKey.currentState;
     form.save();
     if (form.validate()) {
-      // var api =
-      //     "http://testapi.chieuphimquocgia.com.vn/api/UpdateCustomer?customerId=$_id&FirstName=${Uri.encodeComponent(formValues["_fName"])}&LastName=${Uri.encodeComponent(formValues["_lName"])}&Mobile=${Uri.encodeComponent(formValues["_phone"])}&Address=${Uri.encodeComponent(formValues["_address"])}";
-      var api = "http://testapi.chieuphimquocgia.com.vn/api/UpdateCustomer?";
-      print(formValues);
+      var url = NccUrl.updateCustomer;
       var body = [
         "customerId=$_id",
         "FirstName=${Uri.encodeComponent(formValues["_fName"])}",
@@ -326,9 +329,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
         "address=${Uri.encodeComponent(formValues["_address"])}",
       ];
 
-      api += body.join("&");
-      print(Uri.parse(api));
-      var response = await http.post(Uri.parse(api));
+      url += body.join("&");
+      print(Uri.parse(url));
+      var response = await http.post(Uri.parse(url));
       // var response = await http.post(Uri.parse(api));
       if (response.statusCode == 200) {
         var body = json.decode(response.body);

@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _RegisterSuccessPageState extends State<RegisterSuccessPage> {
               FlatButton(
                 color: widget.code == 30 ? Colors.green : Colors.red,
                 child: Text(
-                  widget.code == 30 ? "Trang chủ" : "Quay lại",
+                  widget.code == 30 ? CommonString.homePage : CommonString.back,
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onPressed: () {

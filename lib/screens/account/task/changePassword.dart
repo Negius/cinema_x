@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
+import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/utils/procedure_result.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
@@ -54,16 +56,6 @@ class _ChangePageState extends State<ChangePasswordPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                child: Visibility(
-                  child: Text(
-                    "Tài khoản không tồn tại!",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  visible: (statusCode == 40),
-                ),
-              ),
-              Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                 child: Stack(
                   alignment: AlignmentDirectional.centerEnd,
@@ -73,7 +65,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       obscureText: !_showPass,
                       decoration: InputDecoration(
-                        labelText: "Mật khẩu hiện tại",
+                        labelText: CommonString.currentPassword,
                         labelStyle:
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
@@ -84,15 +76,6 @@ class _ChangePageState extends State<ChangePasswordPage> {
                         ),
                       ),
                     ),
-                    // GestureDetector(
-                    //     onTap: onToggleShowPass,
-                    //     child: Text(
-                    //       _showPass ? "Ẩn" : "Hiện",
-                    //       style: TextStyle(
-                    //           color: Colors.black,
-                    //           fontSize: 13,
-                    //           fontWeight: FontWeight.bold),
-                    //     ))
                   ],
                 ),
               ),
@@ -107,13 +90,13 @@ class _ChangePageState extends State<ChangePasswordPage> {
                       controller: passController,
                       validator: (value) {
                         if (value.length < 8)
-                          return "Mật khẩu mới phải dài ít nhất 8 ký tự";
+                          return ErrorPassword.length;
                         else
                           return null;
                       },
                       obscureText: !_showPass,
                       decoration: InputDecoration(
-                        labelText: "Mật khẩu mới",
+                        labelText: CommonString.newPassword,
                         labelStyle:
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
@@ -124,15 +107,6 @@ class _ChangePageState extends State<ChangePasswordPage> {
                         ),
                       ),
                     ),
-                    // GestureDetector(
-                    //     onTap: onToggleShowPass,
-                    //     child: Text(
-                    //       _showPass ? "Ẩn" : "Hiện",
-                    //       style: TextStyle(
-                    //           color: Colors.black,
-                    //           fontSize: 13,
-                    //           fontWeight: FontWeight.bold),
-                    //     ))
                   ],
                 ),
               ),
@@ -147,7 +121,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                       obscureText: !_showPass,
                       validator: (value) => validateField(value),
                       decoration: InputDecoration(
-                        labelText: "Nhập lại mật khẩu mới",
+                        labelText: CommonString.newPassword2,
                         labelStyle:
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
@@ -158,15 +132,6 @@ class _ChangePageState extends State<ChangePasswordPage> {
                         ),
                       ),
                     ),
-                    // GestureDetector(
-                    //     onTap: onToggleShowPass,
-                    //     child: Text(
-                    //       _showPass ? "Ẩn" : "Hiện",
-                    //       style: TextStyle(
-                    //           color: Colors.black,
-                    //           fontSize: 13,
-                    //           fontWeight: FontWeight.bold),
-                    //     ))
                   ],
                 ),
               ),
@@ -174,7 +139,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Visibility(
                   child: Text(
-                    "Mật khẩu không chính xác!",
+                    ErrorPassword.wrongPassword,
                     style: TextStyle(color: Colors.red),
                   ),
                   visible: (statusCode == 50),
@@ -193,7 +158,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                       });
                     },
                     child: Text(
-                      "Thay đổi mật khẩu",
+                      CommonString.changePassword,
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
@@ -208,13 +173,13 @@ class _ChangePageState extends State<ChangePasswordPage> {
 
   String validateField(String value) {
     var _pass = passController.text;
-    return value == _pass ? null : "Hãy nhập lại chính xác mật khẩu";
+    return value == _pass ? null : ErrorPassword.wrongPassword2;
   }
 
   pushToSave() {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Thay đổi mật khẩu thành công"),
+        title: new Text(CommonString.changePasswordSuccess),
       ),
     );
     //print("Hello");
@@ -229,13 +194,13 @@ class _ChangePageState extends State<ChangePasswordPage> {
   void onChangePasswordClick(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = prefs.getInt("customerId");
+    
     final form = _formKey.currentState;
     form.save();
     if (form.validate()) {
-      String api = "http://testapi.chieuphimquocgia.com.vn/api/ChangePassword?userId=$id&Password=$_oldPassword&_PassNew=$_newPassword";
-      var response = await http.post(api);
-      print(response.statusCode);
-      print(response.body);
+      String url = NccUrl.changePassword +
+          "userId=$id&Password=$_oldPassword&_PassNew=$_newPassword";
+      var response = await http.post(url);
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         setState(() {

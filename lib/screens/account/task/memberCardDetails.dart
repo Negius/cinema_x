@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
       key: _scaffoldKey,
       endDrawer: MenuBar(),
       appBar: new AppBar(
-        title: new Text('Thông tin thẻ thành viên'),
+        title: new Text(CommonString.cardInfo),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -57,7 +58,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
                           SizedBox(
                             width: 180,
                             child: Text(
-                              "Tên chủ thẻ:",
+                              CommonString.cardOwner,
                               style: TextStyle(
                                 color: Color(0xFF8E4585),
                                 fontSize: 20,
@@ -93,7 +94,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
                           SizedBox(
                             width: 180,
                             child: Text(
-                              "Mã thẻ:",
+                              CommonString.cardCode,
                               style: TextStyle(
                                 color: Color(0xFF8E4585),
                                 fontSize: 20,
@@ -129,7 +130,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
                           SizedBox(
                             width: 180,
                             child: Text(
-                              "Hạng thẻ:",
+                              CommonString.cardLevel,
                               style: TextStyle(
                                 color: Color(0xFF8E4585),
                                 fontSize: 20,
@@ -165,7 +166,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
                           SizedBox(
                             width: 180,
                             child: Text(
-                              "Điểm thẻ:",
+                              CommonString.cardPoint,
                               style: TextStyle(
                                 color: Color(0xFF8E4585),
                                 fontSize: 20,
@@ -201,7 +202,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
                           SizedBox(
                             width: 180,
                             child: Text(
-                              "Điểm thưởng:",
+                              CommonString.rewardPoint,
                               style: TextStyle(
                                 color: Color(0xFF8E4585),
                                 fontSize: 20,

@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/details/movie_detail_header.dart';
 import 'package:cinema_x/screens/details/story_line.dart';
@@ -20,6 +21,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   VideoPlayerController _videoController;
   bool isMute = false;
   bool isExpanded = false;
+  String movieInfo;
 
   @override
   void initState() {
@@ -31,6 +33,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         .last
         .split("&")
         .first;
+
+    movieInfo = CommonString.movieInfo
+        .replaceFirst(
+            "_TL_",
+            widget.movie.categories
+                .map((c) => ReCase(c).sentenceCase)
+                .join(", "))
+        .replaceFirst("_DD_", widget.movie.director)
+        .replaceFirst("_DV_", widget.movie.actorsName.join(", "));
   }
 
   @override
@@ -48,10 +59,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   movie: widget.movie,
                   expanded: () {
                     setState(() {
-                      print(isExpanded);
                       isExpanded = !isExpanded;
-                      print("parent");
-                      print(isExpanded);
                     });
                   },
                 ),
@@ -73,14 +81,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         Storyline(widget.movie.introduction),
                         SizedBox(height: 20.0),
                         Text(
-                          """
-Thể loại: ${widget.movie.categories.map((c) => ReCase(c).sentenceCase).join(", ")}
-
-Đạo diễn: ${widget.movie.director}
-
-Diễn viên: ${widget.movie.actorsName.join(", ")}
-""",
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          movieInfo,
+                          style: Theme.of(context).textTheme.body1.copyWith(
                                 color: Colors.white,
                                 fontSize: 16.0,
                               ),

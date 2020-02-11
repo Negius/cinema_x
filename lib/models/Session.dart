@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:http/http.dart' as http;
 
 class Session {
@@ -48,9 +49,8 @@ class Session {
 }
 
 Future<List<Session>> fetchSessions(int id) async {
-  String api =
-      "http://testapi.chieuphimquocgia.com.vn/api/GetAllSessionbyFilm?Filmid=${id.toString()}";
-  final response = await http.post(api);
+  String url = NccUrl.getSessions + id.toString();
+  final response = await http.post(url);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
     final sessions = new List<Session>.from(

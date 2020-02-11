@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/account/task/accountDetails.dart';
 import 'package:cinema_x/screens/account/task/changePassword.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'task/memberCardDetails.dart';
@@ -84,7 +86,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                                   AutoSizeText.rich(
                                     new TextSpan(children: <TextSpan>[
                                       new TextSpan(
-                                        text: "Thẻ thành viên: ",
+                                        text: CommonString.memberCard + ": ",
                                         style: TextStyle(color: Colors.red),
                                       ),
                                       new TextSpan(
@@ -127,7 +129,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                               child: Column(
                                 children: <Widget>[
                                   AutoSizeText(
-                                    "Điểm thẻ:",
+                                    CommonString.cardPoint,
                                     style: TextStyle(color: Colors.grey),
                                     maxLines: 1,
                                   ),
@@ -144,7 +146,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                               child: Column(
                                 children: <Widget>[
                                   AutoSizeText(
-                                    "Điểm thưởng:",
+                                    CommonString.rewardPoint,
                                     style: TextStyle(color: Colors.grey),
                                     maxLines: 1,
                                   ),
@@ -169,7 +171,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             size: 40,
                           ),
                           title: AutoSizeText(
-                            "Thông tin tài khoản",
+                            ReCase(CommonString.accountInfo).sentenceCase,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
@@ -204,7 +206,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             size: 40,
                           ),
                           title: AutoSizeText(
-                            "Thay đổi mật khẩu",
+                            CommonString.changePassword,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
@@ -247,13 +249,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             ),
                           ),
                           title: AutoSizeText(
-                            "Thẻ thành viên",
+                            CommonString.memberCard,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            print("?");
                             setState(() {
                               Navigator.push(
                                   context,
@@ -329,7 +330,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         ListTile(
                           contentPadding: EdgeInsets.only(left: 15, right: 5),
                           title: AutoSizeText(
-                            "Lịch sử giao dịch",
+                            CommonString.purchaseHistory,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
@@ -352,7 +353,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         ListTile(
                           contentPadding: EdgeInsets.only(left: 15, right: 5),
                           title: AutoSizeText(
-                            "Phim đã xem",
+                            CommonString.watchedMovies,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
@@ -367,7 +368,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     left: 0.0,
                     right: 0.0,
                     child: AppBar(
-                      title: Text("Thành Viên"),
+                      title: Text(CommonString.member),
                       backgroundColor: Colors.transparent,
                       leading: IconButton(
                         icon: Icon(Icons.arrow_back),

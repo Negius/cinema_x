@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/actor.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,8 @@ class ActorScroller extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Text(
-            'Diễn viên',
-            style: textTheme.subtitle1.copyWith(fontSize: 18.0, color: Colors.white),
+            CommonString.actor,
+            style: textTheme.subhead.copyWith(fontSize: 18.0, color: Colors.white),
           ),
         ),
         SizedBox.fromSize(

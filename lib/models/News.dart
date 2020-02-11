@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:http/http.dart' as http;
 
 class News {
@@ -31,26 +32,11 @@ class News {
   }
 }
 
-// Future<News> fetchNews() async {
-//   String api = "http://testapi.chieuphimquocgia.com.vn/api/News";
-//   final response = await http.get(api);
-//   if (response.statusCode == 200) {
-//     final parsed = json.decode(response.body);
-//     News movie = News.fromJson(parsed);
-
-//     return Future.value(movie);
-//   } else {
-//     // If that call was not successful, throw an error.
-//     throw Exception('Failed to load post');
-//   }
-// }
-
 Future<List<News>> fetchNews() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/News";
-  final response = await http.get(api);
+  String url = NccUrl.getNews;
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
-    // var currentDayMovies = parsed["nextday"][0]["lstFilm"];
     final listNews = new List<News>.from(
         parsed.map((p) => new News.fromJson(p)).toList());
     return Future.value(listNews);
@@ -62,11 +48,10 @@ Future<List<News>> fetchNews() async {
 
 
 Future<List<News>> fetchAllNews() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/AllNews";
+  String api = NccUrl.getAllNews;
   final response = await http.get(api);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
-    // var currentDayMovies = parsed["nextday"][0]["lstFilm"];
     final listNews = new List<News>.from(
         parsed.map((p) => new News.fromJson(p)).toList());
     return Future.value(listNews);
