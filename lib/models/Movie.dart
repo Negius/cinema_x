@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:http/http.dart' as http;
 
 class Movie {
@@ -56,25 +57,9 @@ class Movie {
   }
 }
 
-Future<Movie> fetchMovie() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/Films/9190";
-  final response = await http.get(api);
-  if (response.statusCode == 200) {
-    final parsed = json.decode(response.body);
-    Movie movie = Movie.fromJson(parsed);
-
-    return Future.value(movie);
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
-
 Future<List<Movie>> fetchShowingMovies() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/GetFilms";
-  final response = await http.get(api);
-  print(response.statusCode);
-  print(response.body);
+  String url = NccUrl.getFilms;
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
     var currentDayMovies = parsed["nextday"][0]["lstFilm"];
@@ -88,8 +73,8 @@ Future<List<Movie>> fetchShowingMovies() async {
 }
 
 Future<List<Movie>> fetchComingMovies() async {
-  String api = "http://testapi.chieuphimquocgia.com.vn/api/FilmShowings";
-  final response = await http.get(api);
+  String url = NccUrl.getFilmShowing;
+  final response = await http.get(url);
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
     final comingMovies =

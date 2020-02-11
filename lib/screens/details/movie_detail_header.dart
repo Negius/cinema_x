@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/booking/booking.dart';
 import 'package:cinema_x/screens/details/arc_banner_image.dart';
@@ -28,7 +29,8 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: Chip(
-        label: Text("Thời lượng: ${widget.movie.duration} phút"),
+        label: Text(CommonString.duration
+            .replaceAll("_TL_", widget.movie.duration.toString())),
         labelStyle: textTheme.caption.copyWith(
           color: Color.fromRGBO(39, 50, 56, 1),
           fontSize: 15,
@@ -47,7 +49,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
       children: [
         Text(
           widget.movie.name,
-          style: textTheme.headline6,
+          style: textTheme.title,
         ),
         SizedBox(height: 8.0),
         Row(children: [_buildCategoryChips(textTheme)]),
@@ -72,9 +74,9 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
                   borderRadius: new BorderRadius.circular(18.0),
                 ),
                 child: AutoSizeText(
-                  "ĐẶT VÉ",
+                  CommonString.booking,
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  style: Theme.of(context).textTheme.body1.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0),
@@ -99,7 +101,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
                 child: AutoSizeText(
                   "Trailer",
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  style: Theme.of(context).textTheme.body1.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0),

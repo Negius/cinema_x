@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:flutter/material.dart';
 
 class PhotoScroller extends StatelessWidget {
@@ -5,8 +6,7 @@ class PhotoScroller extends StatelessWidget {
   final List<String> photoUrls;
 
   Widget _buildPhoto(BuildContext context, int index) {
-    var photo =
-        "https://chieuphimquocgia.com.vn/Content/Images/${photoUrls[index]}";
+    var photo = NccUrl.buildPhoto + photoUrls[index];
 
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
@@ -32,8 +32,9 @@ class PhotoScroller extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Text(
-            'Ảnh',
-            style: textTheme.subtitle1.copyWith(fontSize: 18.0, color: Colors.white),
+            CommonString.image,
+            style:
+                textTheme.subhead.copyWith(fontSize: 18.0, color: Colors.white),
           ),
         ),
         SizedBox.fromSize(

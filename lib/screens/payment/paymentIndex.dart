@@ -1,3 +1,4 @@
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/payment/paymentCheckout.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -22,14 +23,6 @@ class _PaymentIndexPageState extends State<PaymentIndexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //  appBar: AppBar(
-      //   title: const Text('Flutter WebView example'),
-      //   // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
-      //   actions: <Widget>[
-      //     NavigationControls(_controller.future),
-      //     SampleMenu(_controller.future),
-      //   ],
-      // ),
       body: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: widget.url,
@@ -42,9 +35,8 @@ class _PaymentIndexPageState extends State<PaymentIndexPage> {
             _toasterJavascriptChannel(context),
           ].toSet(),
           navigationDelegate: (NavigationRequest request) {
-            if (request.url.startsWith('http://172.16.80.120/CheckOut/VNPayResult?')) {
+            if (request.url.startsWith(PaymentUrl.vnpayResult)) {
               setState(() {
-                print("Checking out");
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -55,14 +47,12 @@ class _PaymentIndexPageState extends State<PaymentIndexPage> {
               });
               return NavigationDecision.prevent;
             }
-            print('allowing navigation to $request');
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
             //bat url va xu ly
             if (url.contains("CheckOut/")) {
               setState(() {
-                print("Checking out");
                 Navigator.push(
                     context,
                     MaterialPageRoute(

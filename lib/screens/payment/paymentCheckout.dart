@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,9 +13,11 @@ class PaymentCheckoutPage extends StatefulWidget {
   PaymentCheckoutPage({@required this.url});
   final String url;
 }
+
 class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
   Map<String, String> params;
   int statusCode = -1;
   int orderId = 0;
@@ -30,7 +33,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     _apiResult = callApi(statusCode, orderId);
     super.initState();
     var initializationSettingsAndroid =
-    new AndroidInitializationSettings('app_icon');
+        new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
@@ -45,14 +48,14 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     return showDialog<String>(
         context: context,
         barrierDismissible:
-        false, // dialog is dismissible with a tap on the barrier
+            false, // dialog is dismissible with a tap on the barrier
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              shape:
-              RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(15)),
               title: ListTile(
-                title: Text('Đánh giá phim'),
+                title: Text(CommonString.rating),
               ),
               content: new Column(
                 children: <Widget>[
@@ -61,9 +64,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                       new IconButton(
                         icon: _point >= 1
                             ? new Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )
+                                Icons.star,
+                                color: Colors.amber,
+                              )
                             : new Icon(Icons.star_border),
                         onPressed: () {
                           setState(() {
@@ -74,9 +77,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                       new IconButton(
                         icon: _point >= 2
                             ? new Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )
+                                Icons.star,
+                                color: Colors.amber,
+                              )
                             : new Icon(Icons.star_border),
                         onPressed: () {
                           setState(() {
@@ -87,9 +90,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                       new IconButton(
                         icon: _point >= 3
                             ? new Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )
+                                Icons.star,
+                                color: Colors.amber,
+                              )
                             : new Icon(Icons.star_border),
                         onPressed: () {
                           setState(() {
@@ -100,9 +103,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                       new IconButton(
                         icon: _point >= 4
                             ? new Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )
+                                Icons.star,
+                                color: Colors.amber,
+                              )
                             : new Icon(Icons.star_border),
                         onPressed: () {
                           setState(() {
@@ -113,9 +116,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                       new IconButton(
                         icon: _point >= 5
                             ? new Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )
+                                Icons.star,
+                                color: Colors.amber,
+                              )
                             : new Icon(Icons.star_border),
                         onPressed: () {
                           setState(() {
@@ -127,18 +130,19 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                   ),
                   new Expanded(
                       child: new TextField(
-                        autofocus: true,
-                        decoration: new InputDecoration(hintText: 'Nhận xét'),
-                        onChanged: (value) {
-                          comment = value;
-                        },
-                      ))
+                    autofocus: true,
+                    decoration:
+                        new InputDecoration(hintText: CommonString.comment),
+                    onChanged: (value) {
+                      comment = value;
+                    },
+                  ))
                 ],
               ),
               actions: <Widget>[
                 FlatButton(
                   child: Text(
-                    'Cancel',
+                    CommonString.cancel,
                     style: TextStyle(color: Colors.black26),
                   ),
                   onPressed: () {
@@ -147,7 +151,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                 ),
                 FlatButton(
                   child: Text(
-                    'Ok',
+                    CommonString.ok,
                     style: TextStyle(color: Colors.red),
                   ),
                   onPressed: () {
@@ -162,11 +166,13 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
 
   void onSubmitReview(BuildContext context, comment, point, filmId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String api = 'http://testapi.chieuphimquocgia.com.vn/api/CreateFilmComment';
+    String url = NccUrl.createComment;
+
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json'
     };
+
     var body = {
       "CustomerId": prefs.get("customerId"),
       "FilmId": int.parse(filmId),
@@ -179,14 +185,13 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
       "CreatedOnUtc": DateTime.now().toString(),
       "IsDisabled": true
     };
-    print(body);
-    var response = await http.post(Uri.parse(api),
+
+    var response = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(body));
-    print(response.body);
+
     if (response.statusCode == 200) {
       Navigator.of(context).pop(comment);
       await flutterLocalNotificationsPlugin.cancel(0);
-//      Map parsed = json.decode(response.body);
     }
   }
 
@@ -198,14 +203,15 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    String dateWithT = prefs.get("endTime").substring(0, 8) + 'T' + prefs.get("endTime").substring(8);
+    String dateWithT = prefs.get("endTime").substring(0, 8) +
+        'T' +
+        prefs.get("endTime").substring(8);
     var scheduledNotificationDateTime = DateTime.parse(dateWithT);
-    print(scheduledNotificationDateTime);
 
     await flutterLocalNotificationsPlugin.schedule(
         0,
         prefs.get("movieName"),
-        'Nhận xét phim',
+        CommonString.comment,
         scheduledNotificationDateTime,
         platformChannelSpecifics,
         androidAllowWhileIdle: true,
@@ -224,11 +230,14 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var data = json.decode(snapshot.data);
-              if (data["data"] == null || data["code"] == null)
+              if (data["data"] == null || data["code"] == null) {
+                print(data);
                 return errorScreen(context);
+              }
               return resultScreen(context, data["data"]["txnId"], data["code"],
                   data["message"]);
             } else {
+              print("No data");
               return errorScreen(context);
             }
           },
@@ -249,13 +258,14 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
             });
           },
           child: Text(
-            "Trang chủ",
+            CommonString.homePage,
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         )
       ]),
     );
   }
+
   Widget resultScreen(
       BuildContext context, String orderId, String code, String message) {
     return Container(
@@ -267,15 +277,15 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
             Container(
               child: code == "00"
                   ? Icon(
-                Icons.check_circle,
-                size: 200,
-                color: Colors.green,
-              )
+                      Icons.check_circle,
+                      size: 200,
+                      color: Colors.green,
+                    )
                   : Icon(
-                Icons.error,
-                size: 200,
-                color: Colors.red,
-              ),
+                      Icons.error,
+                      size: 200,
+                      color: Colors.red,
+                    ),
             ),
             Text(message,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -284,8 +294,8 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
       ),
     );
   }
+
   Widget errorScreen(BuildContext context) {
-    print("failed");
     return Container(
       child: Center(
         child: Column(
@@ -303,7 +313,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
               ),
             ),
             Text(
-              "Đã có lỗi xảy ra",
+              CommonString.commonError,
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ],
@@ -311,6 +321,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
       ),
     );
   }
+
   Map<String, String> decode(String url) {
     var params = url.split("?").last.split("&");
     var result = Map.fromIterable(params,
@@ -318,15 +329,14 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
         value: (p) => p.split("=")[1].toString());
     return result;
   }
-  Future<String> callApi(int code, int id) async {
 
-    String api =
-        "http://testapi.chieuphimquocgia.com.vn/api/UpdateOrderPaymentApp?OrderId=$id&OrderCode=$code";
+  Future<String> callApi(int code, int id) async {
+    String api = NccUrl.updateOrder + "OrderId=$id&OrderCode=$code";
     var response = await http.post(api);
     print(response.statusCode);
     print(response.body);
     _scheduleNotification();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _scheduleNotification();
     }
     return response.body;

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/account/userInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
@@ -42,7 +43,7 @@ class _ProcedureResultPageState extends State<ProcedureResultPage> {
                   MaterialPageRoute(builder: (context) => UserInfoPage()));
             },
             child: AutoSizeText(
-              "Quay lại",
+              CommonString.back,
               style: TextStyle(color: Colors.white),
             ),
           ),

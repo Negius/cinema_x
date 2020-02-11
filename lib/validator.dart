@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cinema_x/config/ValidateError.dart';
+
 mixin Validator{
   var emailValidator = StreamTransformer<String,String>.fromHandlers(
     handleData: (email,sink){
@@ -9,20 +11,20 @@ mixin Validator{
       }
       else
       {
-        sink.addError("Email không đúng định dạng");
+        sink.addError(ErrorEmail.wrongFormat);
       }
 
     }
   );
    var passwordValidator = StreamTransformer<String,String>.fromHandlers(
     handleData: (password,sink){
-      if(password.length > 6)
+      if(password.length > 8)
       {
         sink.add(password);
       }
       else
       {
-        sink.addError("Mật khẩu phải lớn hơn 6 ký tự");
+        sink.addError(ErrorPassword.length);
       }
 
     }

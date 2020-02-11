@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/payment/paymentIndex.dart';
+import 'package:cinema_x/screens/payment/paymentIndex2.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class CheckoutPage extends StatefulWidget {
   CheckoutPage(
@@ -30,8 +33,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
   int _current = 0;
   final paymentMethods = {
     // "momo": "Ví MoMo",
-    "vnpay": "VNPAY - Cổng thanh toán điện tử",
-    "payoo": "Thanh toán online qua Payoo",
+    "vnpay": CommonString.paymentNameVnpay,
+    "payoo": CommonString.paymentNamePayoo,
     // "atm": "Thẻ ATM (Thẻ nội địa)",
     // "visa": "Thẻ quốc tế (VISA, Mastercard)",
     // "airpay": "AirPay"
@@ -42,7 +45,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Thanh toán"),
+        title: Text(CommonString.checkout),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -78,7 +81,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         AutoSizeText(
                           "${widget.movie.name}",
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          style: Theme.of(context).textTheme.body1.copyWith(
                                 color: Colors.black,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w700,
@@ -89,25 +92,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           style: TextStyle(color: Colors.red),
                         ),
                         AutoSizeText(
-                          "Ngày chiếu: ${DateFormat("dd/MM/yyyy").format(widget.projectDateTime)}",
+                          "${CommonString.projectDate}: ${DateFormat("dd/MM/yyyy").format(widget.projectDateTime)}",
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(
                           height: 2,
                         ),
                         AutoSizeText(
-                          "Thời gian: ${DateFormat("hh:mm").format(widget.projectDateTime)} ~ ${DateFormat("hh:mm").format(widget.projectDateTime.add(new Duration(minutes: widget.movie.duration)))}",
+                          "${CommonString.projectTime}: ${DateFormat("hh:mm").format(widget.projectDateTime)} ~ ${DateFormat("hh:mm").format(widget.projectDateTime.add(new Duration(minutes: widget.movie.duration)))}",
                           style: TextStyle(fontSize: 16),
                         ),
                         AutoSizeText(
-                          "Ghế: ${widget.label}",
+                          "${CommonString.seat}: ${widget.label}",
                           style: TextStyle(
                               color: Color.fromARGB(132, 115, 99, 1),
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
                         AutoSizeText(
-                          "Tổng cộng: ${widget.total} đ",
+                          "${CommonString.total}: ${widget.total} đ",
                           style: TextStyle(
                               color: Color.fromRGBO(173, 43, 50, 1),
                               fontSize: 22,
@@ -134,7 +137,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         color: Color.fromRGBO(218, 214, 204, 1),
                         child: Center(
                           child: Text(
-                            "Thông tin vé",
+                            CommonString.ticketInfo,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -154,7 +157,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Số lượng",
+                                CommonString.seatAmount,
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -178,7 +181,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Vị trí ghế",
+                                CommonString.seatLabel,
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -205,7 +208,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Tổng",
+                                CommonString.total,
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -226,7 +229,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         color: Color.fromRGBO(218, 214, 204, 1),
                         child: Center(
                           child: Text(
-                            "Phương thức thanh toán",
+                            CommonString.choosePayment,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -292,7 +295,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             child: AutoSizeText(
-              "Tôi đồng ý với Điều khoản Sử dụng và đang mua vé cho người có độ tuổi thích hợp",
+              CommonString.accept1,
               maxLines: 2,
               minFontSize: 17,
             ),
@@ -313,7 +316,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 child: Center(
                   child: (AutoSizeText(
-                    "Tôi đồng ý và tiếp tục",
+                    CommonString.accept2,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -338,15 +341,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     prefs.setInt("movieId", widget.movie.id);
     prefs.setString("movieName", widget.movie.name);
-    prefs.setString("endTime",DateFormat("yyyyMMddHHmmss").format(widget.projectDateTime.add(Duration(minutes: widget.movie.duration))));
+    prefs.setString(
+        "endTime",
+        DateFormat("yyyyMMddHHmmss").format(widget.projectDateTime
+            .add(Duration(minutes: widget.movie.duration))));
     switch (_current) {
       case 0:
         DateTime now = DateTime.now();
         String vnpCreateDate = DateFormat('yyyyMMddkkmmss').format(now);
         String ipAddress = await GetIp.ipAddress;
-        String vnpHashSecret = "IPCYRCERGNCBFGRYXUBYSWTDCEPHWGUZ";
+        String vnpHashSecret = AppSettings.vnpayHashSecret;
         String inforSendVNPay = "$cLastName $cFirstName;$cEmail;$cPhone";
-        String api = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html?";
+        String url = PaymentUrl.vnpayInit;
         String _requestData = "";
 
         Map<String, dynamic> body = {
@@ -359,8 +365,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
           // "vnp_Merchant": "DEMO",
           "vnp_OrderInfo": removeUnicode(inforSendVNPay),
           "vnp_OrderType": "filmticket",
-          "vnp_ReturnUrl": "http://172.16.80.120/CheckOut/VNPayResult",
-          "vnp_TmnCode": "DXUMNOYW",
+          "vnp_ReturnUrl": PaymentUrl.vnpayResult,
+          "vnp_TmnCode": AppSettings.vnpayTmnCode,
           "vnp_TxnRef": widget.orderId.toString(),
           "vnp_Version": "2.0.0",
         };
@@ -368,43 +374,40 @@ class _CheckoutPageState extends State<CheckoutPage> {
         body["vnp_IpAddr"] = Uri.encodeComponent(ipAddress);
         body["vnp_OrderInfo"] =
             Uri.encodeComponent(removeUnicode(inforSendVNPay));
-        body["vnp_ReturnUrl"] =
-            Uri.encodeComponent("http://172.16.80.120/CheckOut/VNPayResult");
+        body["vnp_ReturnUrl"] = Uri.encodeComponent(PaymentUrl.vnpayResult);
 
         var data = transformBodyVNPay(body);
         var trimmed = _requestData.substring(0, _requestData.length - 1);
         var trimmed2 = data.substring(0, data.length - 1);
         var vnpSecureHash = generateMd5(vnpHashSecret + trimmed);
-        api += trimmed2 +
+        url += trimmed2 +
             "&vnp_SecureHashType=MD5&vnp_SecureHash=" +
             vnpSecureHash;
-        // var response = await http.get(Uri.parse(api));
 
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => PaymentIndexPage(
-              url: api,
+              url: url,
             ),
           ),
         );
         break;
 
       case 1:
-        String api =
-            "https://newsandbox.payoo.com.vn/v2/paynow/order/create"; //Sandbox, thay = url thật sau khi test
+        //Sandbox, thay = url thật sau khi test
+        String url = PaymentUrl.payooInit;
 
         var planInfo =
             "Phim: ${widget.movie.name}, Suất chiếu: ${DateFormat("HH:mm").format(widget.projectDateTime)}";
 
-        // var headers = {"content-type": "multipart/form-data"};
         var data = {
           "Session": widget.orderId.toString(),
           "BusinessUsername": "iss_PhimQuocGia",
           "OrderCashAmount": widget.total,
           "OrderNo": widget.orderId,
           "ShippingDays": 1,
-          "ShopBackUrl": "http://localhost:3813/CheckOut/PayooResult",
+          "ShopBackUrl": PaymentUrl.payooResult,
           "ShopDomain": "http://localhost",
           "ShopID": 1061,
           "ShopTitle": "PhimQuocGia",
@@ -420,7 +423,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           "CustomerAddress": "",
         };
 
-        String checksumKey = "2973880262d35aeff161c1401163e68d";
+        String checksumKey = AppSettings.checksumPayoo;
         // String APIUsername = "iss_PhimQuocGia_BizAPI";
         // String APIPassword = "9zom6iIJvUjNJSjy";
         // String APISignature =
@@ -435,20 +438,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
           "checksum": checkSum,
           "refer": "http://localhost",
           "restrict": "0",
-          // "method":"Bank-account",
-          // "bank":"ABB",
         };
         print(checkSum);
-        var response = await http.post(Uri.parse(api), body: body);
+        var response = await http.post(Uri.parse(url), body: body);
         if (response.statusCode == 200) {
           var resultData = json.decode(response.body);
           if (resultData["result"] == "success") {
-            var url = Uri.decodeFull(resultData["order"]["payment_url"]);
+            var url2 = Uri.decodeFull(resultData["order"]["payment_url"]);
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PaymentIndexPage(
-                  url: url,
+                builder: (context) => PaymentIndexPage2(
+                  url2: url2,
                 ),
               ),
             );
@@ -467,11 +468,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return hex.encode(digest.bytes);
   }
 
-  String generateSHA512(String input) {
-    List<int> bytes = new Utf8Encoder().convert(input);
+  String generateSHA512(String data) {
     var sha512 = crypto.sha512;
-    var digest = sha512.convert(input.codeUnits);
-    // var digest = sha512.convert(bytes);
+    var digest = sha512.convert(data.codeUnits);
     return hex.encode(digest.bytes);
   }
 
@@ -513,7 +512,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     </shop>
                   </shops>""";
 
-      return part1 + (input["ValidityTime"] ?? "") + part2;
+      return part1 +
+          ("""<validity_time>${input["ValidityTime"]}</validity_time>""" ??
+              """""") +
+          part2;
     } on Exception catch (e) {
       throw e;
     }
@@ -668,5 +670,3 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return result.last;
   }
 }
-
-enum paymentEnums { vnpay }

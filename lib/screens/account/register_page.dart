@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/account/register_success.dart';
-import 'package:cinema_x/screens/payment/validate_error.dart';
+import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,15 +26,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final passController = TextEditingController();
   final birthdayController = TextEditingController();
   var formFields = {
-    "_id": "Tên đăng nhập",
-    "_email": "Email",
-    "_password": "Mật khẩu",
-    "_retype": "Nhập lại mật khẩu",
-    "_fName": "Tên",
-    "_lName": "Họ",
-    "_birth": "Ngày sinh",
-    "_phone": "Điện thoại",
-    "_address": "Địa chỉ",
+    "_id": CommonString.id,
+    "_email": CommonString.email,
+    "_password": CommonString.password,
+    "_retype": CommonString.rePassword,
+    "_fName": CommonString.firstName,
+    "_lName": CommonString.lastName,
+    "_birth": CommonString.birthday,
+    "_phone": CommonString.phone,
+    "_address": CommonString.address
   };
 
   var formValues = {
@@ -55,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
       endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text('Đăng ký tài khoản'),
+        title: new Text(CommonString.register),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -80,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   color: Color.fromRGBO(218, 214, 204, 1),
                   child: AutoSizeText(
-                    "THÔNG TIN TÀI KHOẢN",
+                    CommonString.accountInfo,
                     maxLines: 1,
                     minFontSize: 20,
                     style: TextStyle(
@@ -98,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   color: Color.fromRGBO(218, 214, 204, 1),
                   child: AutoSizeText(
-                    "THÔNG TIN THÊM",
+                    CommonString.additionalInfo,
                     maxLines: 1,
                     minFontSize: 20,
                     style: TextStyle(
@@ -147,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("Giới tính"),
+                        Text(CommonString.gender),
                         Container(
                             padding: EdgeInsets.only(right: 0),
                             child: Row(
@@ -161,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     });
                                   },
                                 ),
-                                Text("Nam"),
+                                Text(CommonString.male),
                                 Radio(
                                   groupValue: formValues["_gender"],
                                   value: "F",
@@ -171,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     });
                                   },
                                 ),
-                                Text("Nữ"),
+                                Text(CommonString.female),
                               ],
                             ))
                       ]),
@@ -182,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   color: Color.fromRGBO(218, 214, 204, 1),
                   child: AutoSizeText(
-                    "LIÊN HỆ",
+                    CommonString.contact,
                     maxLines: 1,
                     minFontSize: 20,
                     style: TextStyle(
@@ -204,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                     },
                     child: Text(
-                      "Đăng ký",
+                      CommonString.register2,
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
@@ -273,7 +274,7 @@ class _RegisterPageState extends State<RegisterPage> {
           GestureDetector(
             onTap: onToggleShowPass,
             child: Text(
-              _showPass ? "Ẩn" : "Hiện",
+              _showPass ? CommonString.showpassF: CommonString.showpassT,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 13,
@@ -325,11 +326,11 @@ class _RegisterPageState extends State<RegisterPage> {
         break;
       case "_retype":
         var _pass = passController.text;
-        return _pass == value ? null : "Mật khẩu nhập lại không trùng khớp";
+        return _pass == value ? null : ErrorPassword.wrongPassword3;
       case "_phone":
         return phoneRegex.allMatches(value).isEmpty
-            ? "Số điện thoại không hợp lệ"
-            : value.length < 9 ? "Số điện thoại không hợp lệ" : null;
+            ? ErrorPhone.invalidPhone
+            : value.length < 9 ? ErrorPhone.invalidPhone : null;
       default:
         return null;
     }
@@ -350,7 +351,8 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).copyWith().size.height / 2 - 50,
+                  height:
+                      MediaQuery.of(context).copyWith().size.height / 2 - 50,
                   child: Localizations.override(
                     context: context,
                     locale: const Locale('vi'),
@@ -374,7 +376,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     FlatButton(
-                      child: Text("Thoát"),
+                      child: Text(CommonString.exit),
                       onPressed: () {
                         setState(() {
                           if (birthdayController.text != null &&
@@ -411,8 +413,8 @@ class _RegisterPageState extends State<RegisterPage> {
     form.save();
 
     if (form.validate()) {
-      var api = "http://testapi.chieuphimquocgia.com.vn/api/Register";
-      print(api);
+      var url = NccUrl.registerAccount;
+
       var body = {
         "Username": formValues["_id"],
         "Email": formValues["_email"],
@@ -424,10 +426,8 @@ class _RegisterPageState extends State<RegisterPage> {
         "Address": formValues["_address"],
         "Sex": formValues["_gender"]
       };
-      print(body);
-      var response = await http.post(api, body: body);
-      print(response.statusCode);
-      print(response.body);
+
+      var response = await http.post(url, body: body);
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         var code = body["StatusCode"];
