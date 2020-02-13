@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/payment/paymentIndex.dart';
-import 'package:cinema_x/screens/payment/paymentIndex2.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class CheckoutPage extends StatefulWidget {
   CheckoutPage(
@@ -448,8 +446,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PaymentIndexPage2(
-                  url2: url2,
+                builder: (context) => PaymentIndexPage(
+                  url: url2,
                 ),
               ),
             );
