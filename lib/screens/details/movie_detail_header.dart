@@ -30,7 +30,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
       padding: const EdgeInsets.only(right: 8.0),
       child: Chip(
         label: Text(CommonString.duration
-            .replaceAll("_TL_", widget.movie.duration.toString())),
+            .replaceAll("_value_", widget.movie.duration.toString())),
         labelStyle: textTheme.caption.copyWith(
           color: Color.fromRGBO(39, 50, 56, 1),
           fontSize: 15,
@@ -116,7 +116,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 140.0),
+          padding: const EdgeInsets.only(bottom: 160.0),
           // child: ArcBannerImage(movie.bannerUrl),
           child: ArcBannerImage(widget.movie.imageUrl),
         ),

@@ -94,7 +94,7 @@ class _ListFilms extends State<FilmShowing> {
                                     ),
                                   ),
                                   Text(CommonString.duration.replaceAll(
-                                      "_TL_", data.duration.toString())),
+                                      "_value_", data.duration.toString())),
                                   Row(
                                     children: <Widget>[
                                       AutoSizeText(

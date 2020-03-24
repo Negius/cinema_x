@@ -3,6 +3,7 @@ import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/account/task/accountDetails.dart';
 import 'package:cinema_x/screens/account/task/changePassword.dart';
+import 'package:cinema_x/screens/films/TicketHistory.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
@@ -335,7 +336,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             maxLines: 1,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TicketHistory()));
+                          },
                         ),
                         SizedBox(
                           height: 3,
@@ -401,10 +407,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       user.fullName = prefs.getString("fullName");
-      user.cardCode = prefs.getString("cardCode");
-      user.cardLevelName = prefs.getString("cardLevelName");
-      user.pointCard = prefs.getDouble("pointCard");
-      user.pointReward = prefs.getDouble("pointReward");
+      user.cardCode = prefs.getString("cardCode") ?? "";
+      user.cardLevelName = prefs.getString("cardLevelName") ?? "";
+      user.pointCard = prefs.getDouble("pointCard") ?? 0;
+      user.pointReward = prefs.getDouble("pointReward") ?? 0;
     });
     return user;
   }

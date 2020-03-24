@@ -149,16 +149,16 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                       children: <Widget>[
                                         Radio(
                                           groupValue: formValues["_gender"],
-                                          value: "M",
-                                          onChanged: null,
-                                        ),
-                                        Text(CommonString.male),
-                                        Radio(
-                                          groupValue: formValues["_gender"],
                                           value: "F",
                                           onChanged: null,
                                         ),
                                         Text(CommonString.female),
+                                        Radio(
+                                          groupValue: formValues["_gender"],
+                                          value: "M",
+                                          onChanged: null,
+                                        ),
+                                        Text(CommonString.male),
                                       ],
                                     ))
                               ]),

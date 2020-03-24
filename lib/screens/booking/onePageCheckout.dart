@@ -6,7 +6,6 @@ import 'package:cinema_x/screens/payment/paymentIndex.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
@@ -347,11 +346,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       case 0:
         DateTime now = DateTime.now();
         String vnpCreateDate = DateFormat('yyyyMMddkkmmss').format(now);
-        String ipAddress = await GetIp.ipAddress;
+        // String ipAddress = await GetIp.ipAddress;
+        String ipAddress = "118.70.117.56";
         String vnpHashSecret = AppSettings.vnpayHashSecret;
         String inforSendVNPay = "$cLastName $cFirstName;$cEmail;$cPhone";
         String url = PaymentUrl.vnpayInit;
         String _requestData = "";
+
 
         Map<String, dynamic> body = {
           "vnp_Amount": widget.total * 100,

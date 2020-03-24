@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/services.dart';
 
 class PaymentCheckoutPage extends StatefulWidget {
   @override
@@ -224,45 +224,27 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     return Scaffold(
       // endDrawer: MenuBar(),
       // key: _scaffoldKey,
-      body: Column(children: <Widget>[
-        FutureBuilder(
-          future: _apiResult,
-          builder: (context, snapshot) {
+      body: FutureBuilder(
+        future: _apiResult,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
               var data = json.decode(snapshot.data);
               if (data["data"] == null || data["code"] == null) {
                 print(data);
                 return errorScreen(context);
               }
-              return resultScreen(context, data["data"]["txnId"], data["code"],
-                  data["message"]);
+              return resultScreen(context, data["data"]["txnId"],
+                  data["code"], data["message"]);
             } else {
               print("No data");
               return errorScreen(context);
             }
-          },
-        ),
-        SizedBox(
-          height: 75,
-        ),
-        FlatButton(
-          color: Colors.redAccent,
-          onPressed: () {
-            setState(() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
-                ),
-              );
-            });
-          },
-          child: Text(
-            CommonString.homePage,
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        )
-      ]),
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 
@@ -274,6 +256,9 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 100,
+            ),
             Container(
               child: code == "00"
                   ? Icon(
@@ -289,6 +274,26 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
             ),
             Text(message,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 75,
+            ),
+            FlatButton(
+              color: code == "00" ? Colors.green : Colors.redAccent,
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  );
+                });
+              },
+              child: Text(
+                CommonString.homePage,
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
@@ -316,6 +321,26 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
               CommonString.commonError,
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
+            SizedBox(
+              height: 75,
+            ),
+            FlatButton(
+              color: Colors.redAccent,
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  );
+                });
+              },
+              child: Text(
+                CommonString.homePage,
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
@@ -333,12 +358,10 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future<String> callApi(int code, int id) async {
     String api = NccUrl.updateOrder + "OrderId=$id&OrderCode=$code";
     var response = await http.post(api);
-    print(response.statusCode);
-    print(response.body);
-    _scheduleNotification();
-    if (response.statusCode == 200) {
-      _scheduleNotification();
-    }
+    // _scheduleNotification();
+    // if (response.statusCode == 200) {
+    //   _scheduleNotification();
+    // }
     return response.body;
     //statuscode = 200, body: data{code: 30, data{txnID: orderId}}
   }

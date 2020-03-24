@@ -518,9 +518,49 @@ class _SeatSelectionState extends State<SeatSelection> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    createOrder(context);
-                  });
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            CommonString.ticketInfo,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          content: Text(
+                            CommonString.ticketInfoRecommendation,
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                CommonString.cancel.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            new FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  createOrder(context);
+                                });
+                              },
+                              child: Text(
+                                CommonString.accept.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: Container(
                   height: 30,

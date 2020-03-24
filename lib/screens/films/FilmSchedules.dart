@@ -3,6 +3,7 @@ import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/models/Schedule.dart';
 import 'package:cinema_x/screens/booking/seatSelection.dart';
+import 'package:cinema_x/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:intl/intl.dart';
@@ -28,8 +29,9 @@ class _ListFilms extends State<FilmSchedule> {
       future: _schedule,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<Map<String, dynamic>> listDay = snapshot.data;
-          return DefaultTabController(
+          if (snapshot.data.length > 0) {
+            List<Map<String, dynamic>> listDay = snapshot.data;
+            return DefaultTabController(
               length: listDay.length,
               initialIndex: 0,
               child: Scaffold(
@@ -120,7 +122,71 @@ class _ListFilms extends State<FilmSchedule> {
                     );
                   }).toList(),
                 ),
-              ));
+              ),
+            );
+          } else {
+            return Scaffold(
+              endDrawer: MenuBar(),
+              key: _scaffoldKey,
+              appBar: new AppBar(
+                title: new Text(CommonString.schedule),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.menu),
+                    onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
+                  ),
+                ],
+                backgroundColor: Colors.red,
+              ),
+              body: Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size: 200,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        CommonString.emptySchedules,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      FlatButton(
+                          color: Colors.red,
+                          child: Text(
+                            CommonString.homePage,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                              );
+                            });
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
         } else {
           return Scaffold(
             body: Center(

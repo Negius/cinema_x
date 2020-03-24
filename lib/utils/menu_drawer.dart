@@ -39,8 +39,8 @@ class _MenuBarState extends State<MenuBar> {
       if (isMember) {
         fullName = prefs.getString("fullName");
         barCode = prefs.getString("cardCode");
-        pointReward = prefs.getDouble("pointReward").toInt() ?? 0;
-        pointCard = prefs.getDouble("pointCard").toInt() ?? 0;
+        pointReward = prefs.getDouble("pointReward") != null ? prefs.getDouble("pointReward").toInt() : 0;
+        pointCard = prefs.getDouble("pointCard") != null ? prefs.getDouble("pointCard").toInt() : 0;
       }
     });
   }
