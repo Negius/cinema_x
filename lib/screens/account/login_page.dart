@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
     prefs.setString("cardLevelName", user.cardLevelName);
     prefs.setString("address", user.address);
     prefs.setString("birth", user.birthDay.toString());
-    prefs.setString("gender", user.gender ? "F" : "M");
+    prefs.setString("gender", user.gender ? "M" : "F");
     print(prefs.getInt("customerId"));
   }
 

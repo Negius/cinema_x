@@ -36,12 +36,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
     movieInfo = CommonString.movieInfo
         .replaceFirst(
-            "_TL_",
+            "_value0_",
             widget.movie.categories
                 .map((c) => ReCase(c).sentenceCase)
                 .join(", "))
-        .replaceFirst("_DD_", widget.movie.director)
-        .replaceFirst("_DV_", widget.movie.actorsName.join(", "));
+        .replaceFirst("_value1_", widget.movie.director)
+        .replaceFirst("_value2_", widget.movie.actorsName.join(", "));
   }
 
   @override

@@ -6,7 +6,6 @@ import 'package:cinema_x/screens/payment/paymentIndex.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
@@ -14,13 +13,15 @@ import 'package:http/http.dart' as http;
 
 class CheckoutPage extends StatefulWidget {
   CheckoutPage(
-      {this.movie, this.projectDateTime, this.label, this.total, this.orderId});
+      {this.movie, this.projectDateTime, this.label, this.total, this.orderId, this.pointcard, this.pointreward});
 
   final int total;
   final Movie movie;
   final int orderId;
   final DateTime projectDateTime;
   final String label;
+  final double pointcard;
+  final double pointreward;
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
 }
@@ -194,6 +195,33 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         ),
                       ),
+                      // Container(
+                      //   height: 50,
+                      //   padding: EdgeInsets.only(left: 20, right: 20),
+                      //   decoration: BoxDecoration(
+                      //       border:
+                      //           Border.all(color: Colors.black, width: 0.3)),
+                      //   child: Center(
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: <Widget>[
+                      //         Text(
+                      //           CommonString.total1,
+                      //           style: TextStyle(
+                      //             fontSize: 20,
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           "${widget.total} VNĐ",
+                      //           style: TextStyle(
+                      //             fontSize: 20,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       Container(
                         height: 50,
                         padding: EdgeInsets.only(left: 20, right: 20),
@@ -221,6 +249,72 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         ),
                       ),
+
+                      Container(
+                        height: 50,
+                        color: Color.fromRGBO(218, 214, 204, 1),
+                        child: Center(
+                          child: Text(
+                            CommonString.pointInfo,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.black, width: 0.3)),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                CommonString.pointCard,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                "+ "+"${widget.total}",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                CommonString.pointReward,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                "+ "+"${widget.pointreward}",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                       // paymentMethodRows("zalopay"),
                       Container(
                         height: 50,
@@ -347,11 +441,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       case 0:
         DateTime now = DateTime.now();
         String vnpCreateDate = DateFormat('yyyyMMddkkmmss').format(now);
-        String ipAddress = await GetIp.ipAddress;
+        // String ipAddress = await GetIp.ipAddress;
+        String ipAddress = "118.70.117.56";
         String vnpHashSecret = AppSettings.vnpayHashSecret;
         String inforSendVNPay = "$cLastName $cFirstName;$cEmail;$cPhone";
         String url = PaymentUrl.vnpayInit;
         String _requestData = "";
+
 
         Map<String, dynamic> body = {
           "vnp_Amount": widget.total * 100,

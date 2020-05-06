@@ -518,9 +518,49 @@ class _SeatSelectionState extends State<SeatSelection> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    createOrder(context);
-                  });
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            CommonString.ticketInfo,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          content: Text(
+                            CommonString.ticketInfoRecommendation,
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                CommonString.cancel.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            new FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  createOrder(context);
+                                });
+                              },
+                              child: Text(
+                                CommonString.accept.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: Container(
                   height: 30,
@@ -551,8 +591,8 @@ class _SeatSelectionState extends State<SeatSelection> {
 
   void createOrder(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var listChairValueF1 = seatSelected.map((s) => s["label"]).join(", ");
-    var seatsF1 = seatSelected.map((s) => s["seat"]).join(", ");
+    var listChairValueF1 = seatSelected.map((s) => s["label"]).join(",");
+    var seatsF1 = seatSelected.map((s) => s["seat"]).join(",");
     String url = NccUrl.createOrder;
 
     Map<String, String> headers = {
@@ -577,6 +617,17 @@ class _SeatSelectionState extends State<SeatSelection> {
     var parsed = json.decode(response.body);
     var orderId = parsed["OrderId"];
     var total = (parsed["OrderTotal"] as double).toInt() ?? 0;
+
+    var pointReward ;
+    var cardlevel = prefs.getString("cardLevelName") ?? "";
+    if (cardlevel == "Vip")
+    {
+      pointReward = total * 6 / 100;
+    }
+    else
+    {
+      pointReward = total * 4 / 100;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -586,6 +637,7 @@ class _SeatSelectionState extends State<SeatSelection> {
           orderId: orderId,
           total: total,
           label: listChairValueF1,
+          pointreward: pointReward,
         ),
       ),
     );

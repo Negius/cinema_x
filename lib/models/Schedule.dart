@@ -43,10 +43,7 @@ Future<List<Map<String, dynamic>>> fetchSchedules() async {
       }
     }
   }
-  if (listSchedule.isNotEmpty)
-    return listSchedule;
-  else
-    throw Exception("Cannot load schedule");
+  return listSchedule;
 }
 
 List<Map<String, dynamic>> listFilmByDay(List<dynamic> list) {

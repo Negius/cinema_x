@@ -54,6 +54,9 @@ class NccUrl {
 
   static const String createComment =
       "http://testapi.chieuphimquocgia.com.vn/api/CreateFilmComment";
+       
+  static const String ticketHistory =
+      "http://testapi.chieuphimquocgia.com.vn/api/TicketHistory?CustomerId=";
 }
 
 class PaymentUrl {
@@ -127,11 +130,12 @@ class CommonString {
 
   static const String purchaseHistory = "Lịch sử giao dịch";
   static const String watchedMovies = "Phim đã xem";
-
+  static const String emptySchedules = "Hiện tại chưa có lịch chiếu phim";
   static const String booking = "ĐẶT VÉ";
   static const String booking2 = "Đặt vé theo phim";
   static const String schedule = "Lịch chiếu phim";
   static const String chooseMovie = "Chọn phim";
+  static const String ticketHistory = "Lịch sử giao dịch";
   static const String chooseSession = "Chọn ca chiếu: ";
   static const String projectDate = "Ngày chiếu";
   static const String projectTime = "Thời gian chiếu";
@@ -141,6 +145,8 @@ class CommonString {
   static const String seatNoEmptySpace =
       "Không được có khoảng trống giữa các ghế đã chọn";
   static const String seatAmount = "Số lượng";
+  static const String pointCard = "Tổng chi tiêu";
+  static const String pointReward = "Điểm thưởng";
   static const String seatLabel = "Vị trí ghế";
   static const String seatNormal = "Ghế thường";
   static const String seatVip = "Ghế VIP";
@@ -150,25 +156,32 @@ class CommonString {
   static const String seatSelectedAmount = "Số ghế đã chọn";
   static const String seatSelected = "Danh sách ghế";
   static const String total = "Tổng cộng ";
+  static const String total1 = "Khiến mại ";
   static const String ticketInfo = "Thông tin vé";
+  static const String ticketInfoRecommendation = "Tôi xác nhận mua vé cho người đủ 18 tuổi trở lên và hiểu rằng NCC sẽ không hoàn tiền nếu không chứng thực được độ tuổi của khán giả.";
 
+  static const String pointInfo = "Điểm cộng thêm";
   static const String actor = "Diễn viên";
-  static const String duration = "Thời lượng: _TL_ phút";
+  static const String duration = "Thời lượng: _value_ phút";
+  static const String number = "Số lượng: _value_ vé";
+  static const String seats = "Vị trí: _value_";
+  static const String ordertotal = "Tổng tiền: _value_ đ";
   static const String image = "Ảnh";
   static const String introduction = "Giới thiệu";
   static const String trailerMore = "Xem thêm";
   static const String trailerLess = "Thu gọn";
   static const String movieInfo = """
-Thể loại: _TL_
+Thể loại: _value0_
 
-Đạo diễn: _DD_
+Đạo diễn: _value1_
 
-Diễn viên: _DV_
+Diễn viên: _value2_
 """;
   static const String choosePayment = "Chọn phương thức thanh toán";
   static const String paymentNameVnpay = "VNPAY - Cổng thanh toán điện tử";
   static const String paymentNamePayoo = "Thanh toán online qua Payoo";
   static const String checkout = "Thanh toán";
+  static const String accept = "Đồng ý";
   static const String accept1 =
       "Tôi đồng ý với Điều khoản Sử dụng và đang mua vé cho người có độ tuổi thích hợp";
   static const String accept2 = "Tôi đồng ý và tiếp tục";

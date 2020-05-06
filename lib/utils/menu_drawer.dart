@@ -10,6 +10,7 @@ import 'package:cinema_x/screens/News/AllNews.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:barcode_flutter/barcode_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class MenuBar extends StatefulWidget {
   MenuBar();
@@ -39,8 +40,8 @@ class _MenuBarState extends State<MenuBar> {
       if (isMember) {
         fullName = prefs.getString("fullName");
         barCode = prefs.getString("cardCode");
-        pointReward = prefs.getDouble("pointReward").toInt() ?? 0;
-        pointCard = prefs.getDouble("pointCard").toInt() ?? 0;
+        pointReward = prefs.getDouble("pointReward") != null ? prefs.getDouble("pointReward").toInt() : 0;
+        pointCard = prefs.getDouble("pointCard") != null ? prefs.getDouble("pointCard").toInt() : 0;
       }
     });
   }
@@ -143,30 +144,39 @@ class _MenuBarState extends State<MenuBar> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.pink,
+                    
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Container(
                   padding:
-                      EdgeInsets.only(top: 10, left: 10, right: 40, bottom: 20),
+                      EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
                   color: Colors.white,
                   alignment: Alignment.center,
-                  child: new BarCodeImage(
-                    params: Code39BarCodeParams(barCode.toString(),
-                        withText: true, barHeight: 60),
-                    // data: barCode.toString(), // Code string. (required)
-                    // codeType: BarCodeType.Code39, // Code type (required)
-                    // lineWidth:
-                    //     2.0, // width for a single black/white bar (default: 2.0)
-                    // barHeight:
-                    //     90.0, // height for the entire widget (default: 100.0)
-                    // hasText:
-                    //     true, // Render with text label or not (default: false)
-                    // backgroundColor: Colors.white,
-                    // onError: (error) {
-                    //   // Error handler
-                    //   print('error = $error');
-                    // },
-                  ),
+                  child: new QrImage(
+                                      data: barCode.toString(),
+                                      version: QrVersions.auto,
+                                      size: 220.0,
+                                    ),
+                  // child: new BarCodeImage(
+                  //   params: Code39BarCodeParams(barCode.toString(),
+                  //       withText: true, barHeight: 60),
+                  //   data: barCode.toString(), // Code string. (required)
+                  //   codeType: BarCodeType.Code39, // Code type (required)
+                  //   lineWidth:
+                  //       2.0, // width for a single black/white bar (default: 2.0)
+                  //   barHeight:
+                  //       90.0, // height for the entire widget (default: 100.0)
+                  //   hasText:
+                  //       true, // Render with text label or not (default: false)
+                  //   backgroundColor: Colors.white,
+                  //   onError: (error) {
+                  //     // Error handler
+                  //     print('error = $error');
+                  //   },
+                  // ),
                 ),
                 SizedBox(
                   height: 20,

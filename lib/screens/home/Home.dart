@@ -22,11 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final List imgSlider = [
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/ch%e1%bb%8b%20ch%E1%BB%8B%20em%20em.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/1jumanji.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/2m%e1%ba%aft%20bi%E1%BA%BFc.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/1.anh%20trai%20y%C3%AAu%20qu%C3%A1i.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/2.%20FROZEN.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/bloodshot2.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/n%e1%ba%afng 3 (1).jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/Truy tìm phép thuật.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/tieng goi noi hoang da.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/filmt3.jpg',
   ];
   bool isLoggedIn = false;
   @override

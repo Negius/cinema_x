@@ -65,7 +65,7 @@ Future<List<Movie>> fetchShowingMovies() async {
     var currentDayMovies = parsed["nextday"][0]["lstFilm"];
     final showingMovies = new List<Movie>.from(
         currentDayMovies.map((p) => new Movie.fromJson(p)).toList());
-    return Future.value(showingMovies);
+    return showingMovies;
   } else {
     // If that call was not successful, throw an error.
     throw Exception('Failed to load post');
