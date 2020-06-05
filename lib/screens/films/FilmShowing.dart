@@ -44,7 +44,7 @@ class _ListFilms extends State<FilmShowing> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: FutureBuilder(
@@ -101,7 +101,7 @@ class _ListFilms extends State<FilmShowing> {
                                         data.versionCode,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.red),
+                                            color: Colors.red[900]),
                                       ),
                                     ],
                                   )

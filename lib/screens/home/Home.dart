@@ -22,11 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final List imgSlider = [
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/b%c3%a0 hoàng nói dối.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/b%e1%ba%aby linh hồn.jpg',
     'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/bloodshot2.jpg',
     'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/n%e1%ba%afng 3 (1).jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/Truy tìm phép thuật.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/tieng goi noi hoang da.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/filmt3.jpg',
   ];
   bool isLoggedIn = false;
   @override
@@ -54,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               imageSliderCarousel(),
               tabFilms(),
               tabNews(),
+              tabfooter(),
             ]),
           ),
           new Positioned(
@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 0.0,
             child: AppBar(
               backgroundColor: Colors.transparent,
+              elevation: 0.0,
               leading: IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
@@ -79,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.menu),
+                  // color: Colors.red[50],
                   onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
                 ),
               ],
@@ -92,11 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget imageSliderCarousel() {
     return Container(
-      height: 135,
+      height: 129,
       child: Carousel(
         dotSize: 0.0,
-        boxFit: BoxFit.cover,
-        images: imgSlider.map((img) => Image.network(img)).toList(),
+        boxFit: BoxFit.fill,
+        images: imgSlider.map((img) => Image.network(img, )).toList(),
         autoplay: true,
         indicatorBgPadding: 0.0,
       ),
@@ -113,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: AppBar(
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.red[900],
               //height: 700,
               bottom: TabBar(
                 tabs: [
@@ -151,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           appBar: new AppBar(
             title: Text(ReCase(CommonString.news).sentenceCase),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.red[900],
             automaticallyImplyLeading: false,
             actions: <Widget>[
               InkWell(
@@ -159,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       width: 60,
                       height: 25,
-                      margin: EdgeInsets.only(right: 15),
+                      margin: EdgeInsets.only(right: 15,),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         border: Border.all(width: 1.5, color: Colors.white),
@@ -188,4 +190,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+ Widget tabfooter(){
+  return Container(
+    height: 160,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.white,
+                                ),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new AssetImage(
+                                      "assets/images/footer.png"),
+                                ),
+                              ),
+                            );
+ }
 }

@@ -23,6 +23,7 @@ class _NewsDetailState extends State<NewsDetail> {
         children: <Widget>[
           new Center(
             child: Container(
+              margin:  EdgeInsets.only(top:15),
               padding:
                   EdgeInsets.only(top: 70, left: 10, right: 10, bottom: 10),
               child: SingleChildScrollView(
@@ -53,7 +54,7 @@ class _NewsDetailState extends State<NewsDetail> {
             right: 0.0,
             child: AppBar(
               title: Text(widget.news.title),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.red[900],
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),

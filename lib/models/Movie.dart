@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Movie {
   int id;
@@ -18,6 +19,7 @@ class Movie {
   String videoUrl;
   String versionCode;
   String premieredDay;
+   String countryName;
 
   Movie(
       {this.id,
@@ -33,7 +35,9 @@ class Movie {
       this.bannerUrl,
       this.videoUrl,
       this.versionCode,
-      this.premieredDay});
+      this.premieredDay,
+      this.countryName
+      });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
@@ -53,6 +57,7 @@ class Movie {
       videoUrl: json["VideoUrl"] as String,
       versionCode: json["VersionCode"] as String,
       premieredDay: json["PremieredDay"] as String,
+       countryName: json["CountryName"] as String,
     );
   }
 }
@@ -66,6 +71,22 @@ Future<List<Movie>> fetchShowingMovies() async {
     final showingMovies = new List<Movie>.from(
         currentDayMovies.map((p) => new Movie.fromJson(p)).toList());
     return showingMovies;
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load post');
+  }
+}
+
+Future<List<Movie>> fetchWatchedMovies() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var customerId = prefs.getInt("customerId");
+  String url = NccUrl.filmHistory + customerId.toString();
+  final response = await http.post(url);
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body);
+    final filmHistory =
+        new List<Movie>.from(parsed.map((p) => new Movie.fromJson(p)).toList());
+    return filmHistory;
   } else {
     // If that call was not successful, throw an error.
     throw Exception('Failed to load post');

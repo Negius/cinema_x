@@ -44,11 +44,11 @@ class _StorylineState extends State<Storyline> {
               !isCollapsed
                   ? Text(
                       CommonString.trailerLess,
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.red[900]),
                     )
                   : Text(
                       CommonString.trailerMore,
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.red[900]),
                     ),
             ],
           ),

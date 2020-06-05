@@ -6,11 +6,16 @@ import 'package:cinema_x/screens/home/Home.dart';
 import 'package:cinema_x/screens/account/login_page.dart';
 import 'package:cinema_x/screens/account/userInfo.dart';
 import 'package:cinema_x/screens/films/FilmShowing.dart';
+import 'package:cinema_x/screens/setting/SettingList.dart';
 import 'package:cinema_x/screens/News/AllNews.dart';
+
+import 'package:cinema_x/screens/News/NewNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MenuBar extends StatefulWidget {
   MenuBar();
@@ -30,6 +35,7 @@ class _MenuBarState extends State<MenuBar> {
   @override
   void initState() {
     super.initState();
+    getUser();
     getLoginInfo();
   }
 
@@ -40,8 +46,12 @@ class _MenuBarState extends State<MenuBar> {
       if (isMember) {
         fullName = prefs.getString("fullName");
         barCode = prefs.getString("cardCode");
-        pointReward = prefs.getDouble("pointReward") != null ? prefs.getDouble("pointReward").toInt() : 0;
-        pointCard = prefs.getDouble("pointCard") != null ? prefs.getDouble("pointCard").toInt() : 0;
+        pointReward = prefs.getDouble("pointReward") != null
+            ? prefs.getDouble("pointReward").toInt()
+            : 0;
+        pointCard = prefs.getDouble("pointCard") != null
+            ? prefs.getDouble("pointCard").toInt()
+            : 0;
       }
     });
   }
@@ -49,16 +59,17 @@ class _MenuBarState extends State<MenuBar> {
   @override
   Widget build(BuildContext context) {
     TextTheme _textTheme = Theme.of(context).textTheme;
+
     return Theme(
       data:
-          Theme.of(context).copyWith(canvasColor: Color.fromRGBO(0, 0, 0, 0.2)),
+          Theme.of(context).copyWith(canvasColor: Color.fromRGBO(0, 0, 0, 0.7)),
       child: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-              height: 230,
+              height: 240,
               child: DrawerHeader(
                 child: Container(
                   child: Column(
@@ -74,7 +85,14 @@ class _MenuBarState extends State<MenuBar> {
                                 Icons.notifications,
                                 color: Colors.white,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NotiList(),
+                                  ),
+                                );
+                              },
                             ),
                             Container(
                               height: 100,
@@ -96,7 +114,12 @@ class _MenuBarState extends State<MenuBar> {
                                 Icons.settings,
                                 color: Colors.white,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SettingList()));
+                              },
                             ),
                           ],
                         ),
@@ -105,14 +128,15 @@ class _MenuBarState extends State<MenuBar> {
                         new TextSpan(
                             style: _textTheme.title.copyWith(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 13,
                             ),
                             children: <TextSpan>[
                               new TextSpan(text: "Xin chào, "),
                               new TextSpan(
                                 text: isMember ? fullName : guest.username,
-                                style:
-                                    new TextStyle(fontWeight: FontWeight.bold),
+                                style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ]),
                         maxLines: 1,
@@ -144,7 +168,6 @@ class _MenuBarState extends State<MenuBar> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.pink,
-                    
                   ),
                 ),
                 SizedBox(
@@ -156,10 +179,10 @@ class _MenuBarState extends State<MenuBar> {
                   color: Colors.white,
                   alignment: Alignment.center,
                   child: new QrImage(
-                                      data: barCode.toString(),
-                                      version: QrVersions.auto,
-                                      size: 220.0,
-                                    ),
+                    data: barCode.toString(),
+                    version: QrVersions.auto,
+                    size: 220.0,
+                  ),
                   // child: new BarCodeImage(
                   //   params: Code39BarCodeParams(barCode.toString(),
                   //       withText: true, barHeight: 60),
@@ -502,5 +525,20 @@ class _MenuBarState extends State<MenuBar> {
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+  }
+
+  Future<String> getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String api = NccUrl.userInfo + prefs.getInt("customerId").toString();
+    var response = await http.post(api);
+    // _scheduleNotification();
+    if (response.statusCode == 200) {
+      Map parsed = json.decode(response.body);
+
+      var pr = parsed["PointReward"] as double;
+      var pc = parsed["PointCard"] as double;
+      prefs.setDouble("pointReward", pr);
+      prefs.setDouble("pointCard", pc);
+    }
   }
 }

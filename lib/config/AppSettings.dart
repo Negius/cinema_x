@@ -57,6 +57,20 @@ class NccUrl {
        
   static const String ticketHistory =
       "http://testapi.chieuphimquocgia.com.vn/api/TicketHistory?CustomerId=";
+
+  static const String pointHistory =
+      "http://testapi.chieuphimquocgia.com.vn/api/PointHistory?CustomerId=";
+
+  static const String userInfo =
+      "http://testapi.chieuphimquocgia.com.vn/api/GetUser?UserId=";
+      
+  static const String filmHistory =
+      "http://testapi.chieuphimquocgia.com.vn/api/FilmHistory?CustomerId=";
+
+      static const String cancelOrder =
+      "http://testapi.chieuphimquocgia.com.vn/api/CancelOrder?OrderId=";
+      
+
 }
 
 class PaymentUrl {
@@ -92,10 +106,11 @@ class CommonString {
   static const String memberCard = "Thẻ thành viên";
   static const String member = "Thành viên";
   static const String cardInfo = "Thông tin thẻ thành viên";
+  static const String pointScreen = "Điểm thẻ";
   static const String cardOwner = "Tên chủ thẻ: ";
   static const String cardCode = "Mã thẻ: ";
   static const String cardLevel = "Hạng thẻ: ";
-  static const String cardPoint = "Điểm thẻ: ";
+  static const String cardPoint = "Tổng chi tiêu: ";
   static const String rewardPoint = "Điểm thưởng";
 
   static const String detailedInfo = "Thông tin chi tiết";
@@ -127,9 +142,12 @@ class CommonString {
   static const String newPassword = "Mật khẩu mới";
   static const String newPassword2 = "Nhập lại mật khẩu mới";
   static const String changePasswordSuccess = "Thay đổi mật khẩu thành công";
+  static const String emailRecoverPassword = "Email lấy lại mật khẩu";
+  static const String passwordRecovery = "Phục hồi";
 
   static const String purchaseHistory = "Lịch sử giao dịch";
   static const String watchedMovies = "Phim đã xem";
+  static const String voucher = "Voucher, thẻ quà tặng";
   static const String emptySchedules = "Hiện tại chưa có lịch chiếu phim";
   static const String booking = "ĐẶT VÉ";
   static const String booking2 = "Đặt vé theo phim";
@@ -166,6 +184,11 @@ class CommonString {
   static const String number = "Số lượng: _value_ vé";
   static const String seats = "Vị trí: _value_";
   static const String ordertotal = "Tổng tiền: _value_ đ";
+
+  static const String pointCardchange = "Tổng chi thay đổi: _value_ điểm";
+  static const String pointRewardchange = "Điểm Thưởng thay đổi: _value_ điểm";
+  static const String changeReason = "_value_";
+
   static const String image = "Ảnh";
   static const String introduction = "Giới thiệu";
   static const String trailerMore = "Xem thêm";

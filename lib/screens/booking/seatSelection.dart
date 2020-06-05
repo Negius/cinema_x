@@ -518,6 +518,7 @@ class _SeatSelectionState extends State<SeatSelection> {
               ),
               GestureDetector(
                 onTap: () {
+                  if(seatSelected.isNotEmpty){//
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -561,7 +562,14 @@ class _SeatSelectionState extends State<SeatSelection> {
                           ],
                         );
                       });
-                },
+                    }else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Quý khách vui lòng chọn ghế trước khi thanh toán!'));
+                    });
+                }},
                 child: Container(
                   height: 30,
                   width: 100,
@@ -604,9 +612,14 @@ class _SeatSelectionState extends State<SeatSelection> {
       "customerId": prefs.getInt("customerId") ?? 0,
       "planScreenId": widget.planId ?? 0,
       "seatsF1": seatsF1,
+      "seatsF2": "",
+      "seatsF3": "",
       "ListChairValueF1": listChairValueF1,
+      "ListChairValueF2": "",
+      "ListChairValueF3": "",
       "CustomerFirstName": prefs.getString("firstName") ?? "",
       "CustomerLastName": prefs.getString("lastName") ?? "",
+      "MemberCardCode": prefs.getString("cardCode") ?? "",
       "CustomerEmail": prefs.getString("email") ?? "",
       "CustomerPhone": prefs.getString("phone") ?? "",
       "PaymentMethodSystemName":
@@ -617,6 +630,7 @@ class _SeatSelectionState extends State<SeatSelection> {
     var parsed = json.decode(response.body);
     var orderId = parsed["OrderId"];
     var total = (parsed["OrderTotal"] as double).toInt() ?? 0;
+    prefs.setInt("orderId", orderId);
 
     var pointReward ;
     var cardlevel = prefs.getString("cardLevelName") ?? "";

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: Container(
@@ -129,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.black26, fontSize: 15),
                           focusedBorder: new UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.red[900],
                               width: 1.0,
                               style: BorderStyle.solid,
                             ),
@@ -198,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Center(
                   child: RaisedButton(
-                    color: Colors.red,
+                    color: Colors.red[900],
                     onPressed: () {
                       setState(() {
                         onRegisterClicked(context);
@@ -240,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
           labelStyle: new TextStyle(color: Colors.black26, fontSize: 15),
           focusedBorder: new UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.red,
+              color: Colors.red[900],
               width: 1.0,
               style: BorderStyle.solid,
             ),
@@ -267,7 +268,7 @@ class _RegisterPageState extends State<RegisterPage> {
               labelStyle: TextStyle(color: Colors.black26, fontSize: 15),
               focusedBorder: new UnderlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.red, width: 1.0, style: BorderStyle.solid),
+                    color: Colors.red[900], width: 1.0, style: BorderStyle.solid),
               ),
             ),
           ),
@@ -343,70 +344,88 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<Null> _selectDate(BuildContext context) async {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  height:
-                      MediaQuery.of(context).copyWith().size.height / 2 - 50,
-                  child: Localizations.override(
-                    context: context,
-                    locale: const Locale('vi'),
-                    child: CupertinoDatePicker(
-                      initialDateTime: DateTime.now(),
-                      onDateTimeChanged: (DateTime newdate) {
-                        setState(() {
-                          selectedDate = newdate;
-                        });
-                      },
-                      use24hFormat: true,
-                      minimumYear: 1950,
-                      maximumDate: DateTime.now(),
-                      maximumYear: DateTime.now().year,
-                      minuteInterval: 1,
-                      mode: CupertinoDatePickerMode.date,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text(CommonString.exit),
-                      onPressed: () {
-                        setState(() {
-                          if (birthdayController.text != null &&
-                              birthdayController.text.isNotEmpty) {
-                            selectedDate = DateFormat("dd/MM/yyyy")
-                                .parse(birthdayController.text);
-                          } else {
-                            selectedDate = DateTime.now();
-                          }
-                        });
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                    FlatButton(
-                      child: Text("OK"),
-                      onPressed: () {
-                        setState(() {
-                          birthdayController.text =
-                              df.format(selectedDate.toLocal());
-                        });
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
-        });
-  }
+    DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(1950, 1, 1),
+                              maxTime: DateTime.now(), 
+                              onChanged: (date) {
+                                print('change $date');
+                                
+                              }, 
+                              onConfirm: (dateTime) {
+                                setState(() {
+                                  selectedDate = dateTime;
+                                   String _date = '${dateTime.day} - ${dateTime.month} - ${dateTime.year}';
+                                   birthdayController.text = _date;
+                                });
+                              }, currentTime: DateTime.now(), locale: LocaleType.vi);
+    }
+  
+
+    // showModalBottomSheet(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return Container(
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: <Widget>[
+    //             Container(
+    //               height:
+    //                   MediaQuery.of(context).copyWith().size.height / 2 - 50,
+    //               child: Localizations.override(
+    //                 context: context,
+    //                 locale: const Locale('vi'),
+    //                 child: CupertinoDatePicker(
+    //                   initialDateTime: DateTime.now(),
+    //                   onDateTimeChanged: (DateTime newdate) {
+    //                     setState(() {
+    //                       selectedDate = newdate;
+    //                     });
+    //                   },
+    //                   use24hFormat: true,
+    //                   minimumYear: 1950,
+    //                   maximumDate: DateTime.now(),
+    //                   maximumYear: DateTime.now().year,
+    //                   minuteInterval: 1,
+    //                   mode: CupertinoDatePickerMode.date,
+    //                 ),
+    //               ),
+    //             ),
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.end,
+    //               children: <Widget>[
+    //                 FlatButton(
+    //                   child: Text(CommonString.exit),
+    //                   onPressed: () {
+    //                     setState(() {
+    //                       if (birthdayController.text != null &&
+    //                           birthdayController.text.isNotEmpty) {
+    //                         selectedDate = DateFormat("dd/MM/yyyy")
+    //                             .parse(birthdayController.text);
+    //                       } else {
+    //                         selectedDate = DateTime.now();
+    //                       }
+    //                     });
+    //                     Navigator.of(context, rootNavigator: true).pop();
+    //                   },
+    //                 ),
+    //                 FlatButton(
+    //                   child: Text("OK"),
+    //                   onPressed: () {
+    //                     setState(() {
+    //                       birthdayController.text =
+    //                           df.format(selectedDate.toLocal());
+    //                     });
+    //                     Navigator.of(context, rootNavigator: true).pop();
+    //                   },
+    //                 ),
+    //               ],
+    //             )
+    //           ],
+    //         ),
+    //       );
+    //     });
+  // }
 
   void onRegisterClicked(BuildContext context) async {
     final form = _formKey.currentState;

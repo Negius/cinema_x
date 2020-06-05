@@ -31,7 +31,7 @@ class _ShowingState extends State<Comming> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Colors.blueGrey[900],
+      color: Color(0xFF222222),
       child: imgSlider(context),
     );
   }

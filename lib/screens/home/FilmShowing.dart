@@ -33,7 +33,7 @@ class _ShowingState extends State<Showing> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Colors.blueGrey[900],
+      color: Color(0xFF222222),
       child: imgSlider(context),
     );
   }
@@ -76,7 +76,11 @@ class _ShowingState extends State<Showing> {
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
+                              //  image: DecorationImage(
+                              //   image: AssetImage("assets/images/background.jpg"),
+                              //   fit: BoxFit.cover,
+                              // ),
+                              color: Color(0xFF222222),
                             ),
                             child: Image.network(
                               imgUrl as String,
@@ -97,6 +101,7 @@ class _ShowingState extends State<Showing> {
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
                         ),

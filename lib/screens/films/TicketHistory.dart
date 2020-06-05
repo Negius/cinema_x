@@ -43,7 +43,7 @@ class TicketHistoryState extends State<TicketHistory> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: FutureBuilder(
@@ -95,7 +95,7 @@ class TicketHistoryState extends State<TicketHistory> {
                                               data.orderTotal.toString()),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.red),
+                                              color: Colors.red[900]),
                                         ),
                                       ],
                                     )

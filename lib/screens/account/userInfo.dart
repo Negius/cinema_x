@@ -4,12 +4,16 @@ import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/account/task/accountDetails.dart';
 import 'package:cinema_x/screens/account/task/changePassword.dart';
 import 'package:cinema_x/screens/films/TicketHistory.dart';
+import 'package:cinema_x/screens/films/WatchedFilm.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'task/memberCardDetails.dart';
+import 'task/pointCard.dart';
 
 class UserInfoPage extends StatefulWidget {
   @override
@@ -19,6 +23,7 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<User> _user;
+
 
   @override
   void initState() {
@@ -88,7 +93,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                                     new TextSpan(children: <TextSpan>[
                                       new TextSpan(
                                         text: CommonString.memberCard + ": ",
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(color: Colors.red[900]),
                                       ),
                                       new TextSpan(
                                         text: user.cardCode,
@@ -115,7 +120,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                               margin: EdgeInsets.only(top: 75, right: 20),
                               child: Text(
                                 user.cardLevelName,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -237,7 +242,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                           contentPadding: EdgeInsets.all(5),
                           // leading: Icon(
                           //   Icons.lock,
-                          //   color: Colors.red,
+                          //   color: Colors.red[900],
                           // ),
                           leading: Container(
                             width: 40,
@@ -290,7 +295,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             maxLines: 1,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
-                          onTap: () {},
+                          onTap: () {
+                            setState(() {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PointCardPage()));
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 3,
@@ -309,7 +321,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         //   contentPadding: EdgeInsets.all(5),
                         //   leading: Icon(
                         //     Icons.card_giftcard,
-                        //     color: Colors.red,
+                        //     color: Colors.red[900],
                         //   ),
                         //   title: AutoSizeText("Quà tặng | Voucher | Coupon"),
                         //   trailing: Icon(Icons.arrow_forward_ios),
@@ -329,7 +341,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         //   ),
                         // ),
                         ListTile(
-                          contentPadding: EdgeInsets.only(left: 15, right: 5),
+                          // contentPadding: EdgeInsets.only(left: 15, right: 5),
+                          contentPadding: EdgeInsets.all(5),
+                          leading: Icon(
+                            Icons.trending_up,
+                            color: Color.fromRGBO(221, 45, 57, 1),
+                            size: 40,
+                          ),
                           title: AutoSizeText(
                             CommonString.purchaseHistory,
                             minFontSize: 20,
@@ -357,14 +375,57 @@ class _UserInfoPageState extends State<UserInfoPage> {
                           ),
                         ),
                         ListTile(
-                          contentPadding: EdgeInsets.only(left: 15, right: 5),
+                          contentPadding: EdgeInsets.all(5),
+                          leading: Icon(
+                            Icons.local_movies,
+                            color: Color.fromRGBO(221, 45, 57, 1),
+                            size: 40,
+                          ),
                           title: AutoSizeText(
                             CommonString.watchedMovies,
                             minFontSize: 20,
                             maxLines: 1,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WatchedFilm()));
+                          },
+                        ),
+                        SizedBox(
+                          height: 3,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.all(5),
+                          leading: Icon(
+                            Icons.redeem,
+                            color: Color.fromRGBO(221, 45, 57, 1),
+                            size: 40,
+                          ),
+                          title: AutoSizeText(
+                            CommonString.voucher,
+                            minFontSize: 20,
+                            maxLines: 1,
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WatchedFilm()));
+                          },
                         ),
                       ],
                     ),
@@ -375,7 +436,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     right: 0.0,
                     child: AppBar(
                       title: Text(CommonString.member),
-                      backgroundColor: Colors.transparent,
+                      backgroundColor: Colors.red[900],
                       leading: IconButton(
                         icon: Icon(Icons.arrow_back),
                         onPressed: () {
@@ -401,10 +462,21 @@ class _UserInfoPageState extends State<UserInfoPage> {
           },
         ));
   }
-
+  
   Future<User> getUserInfo() async {
     var user = new User();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String api = NccUrl.userInfo + prefs.getInt("customerId").toString();
+    var response = await http.post(api);
+    // _scheduleNotification();
+    if (response.statusCode == 200) { 
+      Map parsed = json.decode(response.body);
+      
+      var pr = parsed["PointReward"] as double;
+      var pc = parsed["PointCard"] as double;
+      prefs.setDouble("pointReward", pr);
+      prefs.setDouble("pointCard", pc);
+    }
     setState(() {
       user.fullName = prefs.getString("fullName");
       user.cardCode = prefs.getString("cardCode") ?? "";

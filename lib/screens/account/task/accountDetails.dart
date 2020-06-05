@@ -64,7 +64,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       body: Stack(
         children: <Widget>[
@@ -126,7 +126,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                   color: Colors.black26, fontSize: 15),
                               focusedBorder: new UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.red,
+                                  color: Colors.red[900],
                                   width: 1.0,
                                   style: BorderStyle.solid,
                                 ),
@@ -141,7 +141,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                               children: <Widget>[
                                 Text(
                                   CommonString.gender,
-                                  style: TextStyle(color: Colors.red),
+                                  style: TextStyle(color: Colors.red[900]),
                                 ),
                                 Container(
                                     padding: EdgeInsets.only(right: 0),
@@ -265,7 +265,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
           labelStyle: new TextStyle(color: Colors.redAccent, fontSize: 18),
           focusedBorder: new UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.red,
+              color: Colors.red[900],
               width: 1.0,
               style: BorderStyle.solid,
             ),

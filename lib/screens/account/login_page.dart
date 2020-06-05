@@ -5,6 +5,7 @@ import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/models/user.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:cinema_x/screens/account/register_page.dart';
+import 'package:cinema_x/screens/account/task/passwordrecovery.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: Container(
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                         new TextStyle(color: Colors.black26, fontSize: 15),
                     focusedBorder: new UnderlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.red,
+                          color: Colors.red[900],
                           width: 1.0,
                           style: BorderStyle.solid),
                     ),
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Visibility(
                   child: Text(
                     ErrorId.notExisted,
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.red[900]),
                   ),
                   visible: (statusCode == 40),
                 ),
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.red[900],
                               width: 1.0,
                               style: BorderStyle.solid),
                         ),
@@ -130,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Visibility(
                   child: Text(
                     ErrorPassword.wrongPassword,
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.red[900]),
                   ),
                   visible: (statusCode == 50),
                 ),
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 56,
                   child: RaisedButton(
-                    color: Colors.red,
+                    color: Colors.red[900],
                     onPressed: () {
                       setState(() {
                         onSignInClicked(context);
@@ -173,10 +174,22 @@ class _LoginPageState extends State<LoginPage> {
                                 builder: (context) => RegisterPage()));
                       },
                     ),
-                    Text(
-                      CommonString.forgotPass,
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                    InkWell(
+                      child: Text(
+                        CommonString.forgotPass,
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Passwordrecovery()));
+                      },
                     ),
+                    // Text(
+                    //   CommonString.forgotPass,
+                    //   style: TextStyle(fontSize: 15, color: Colors.grey),
+                    // ),
                   ],
                 ),
               ),

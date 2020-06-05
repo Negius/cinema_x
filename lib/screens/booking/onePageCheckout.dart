@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
+import 'package:cinema_x/screens/home/Home.dart';
 import 'package:cinema_x/screens/payment/paymentIndex.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
@@ -40,317 +41,321 @@ class _CheckoutPageState extends State<CheckoutPage> {
   };
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      endDrawer: MenuBar(),
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(CommonString.checkout),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+    return WillPopScope(
+       onWillPop: _cancelConfirm,
+       child: Scaffold(
+        endDrawer: MenuBar(),
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(CommonString.checkout),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              _cancelConfirm();
+              // _cancelOrder();
+              // Navigator.pop(context);
+            },
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
+            )
+          ],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
-          )
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Image.network(widget.movie.imageUrl),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        AutoSizeText(
-                          "${widget.movie.name}",
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                                color: Colors.black,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        AutoSizeText(
-                          widget.movie.description,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        AutoSizeText(
-                          "${CommonString.projectDate}: ${DateFormat("dd/MM/yyyy").format(widget.projectDateTime)}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        AutoSizeText(
-                          "${CommonString.projectTime}: ${DateFormat("hh:mm").format(widget.projectDateTime)} ~ ${DateFormat("hh:mm").format(widget.projectDateTime.add(new Duration(minutes: widget.movie.duration)))}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        AutoSizeText(
-                          "${CommonString.seat}: ${widget.label}",
-                          style: TextStyle(
-                              color: Color.fromARGB(132, 115, 99, 1),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        AutoSizeText(
-                          "${CommonString.total}: ${widget.total} đ",
-                          style: TextStyle(
-                              color: Color.fromRGBO(173, 43, 50, 1),
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                      // decoration: BoxDecoration(
-                      //   color: Colors.red[50],
-                      // ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: Image.network(widget.movie.imageUrl),
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          AutoSizeText(
+                            "${widget.movie.name}",
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          AutoSizeText(
+                            widget.movie.description,
+                            style: TextStyle(color: Colors.red[900]),
+                          ),
+                          AutoSizeText(
+                            "${CommonString.projectDate}: ${DateFormat("dd/MM/yyyy").format(widget.projectDateTime)}",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          AutoSizeText(
+                            "${CommonString.projectTime}: ${DateFormat("hh:mm").format(widget.projectDateTime)} ~ ${DateFormat("hh:mm").format(widget.projectDateTime.add(new Duration(minutes: widget.movie.duration)))}",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          AutoSizeText(
+                            "${CommonString.seat}: ${widget.label}",
+                            style: TextStyle(
+                                color: Color.fromARGB(132, 115, 99, 1),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          AutoSizeText(
+                            "${CommonString.total}: ${widget.total} đ",
+                            style: TextStyle(
+                                color: Color.fromRGBO(173, 43, 50, 1),
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                        // decoration: BoxDecoration(
+                        //   color: Colors.red[900][50],
+                        // ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: Container(
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: <Widget>[
-                      Container(
-                        height: 50,
-                        color: Color.fromRGBO(218, 214, 204, 1),
-                        child: Center(
-                          child: Text(
-                            CommonString.ticketInfo,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.black, width: 0.3)),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                CommonString.seatAmount,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                widget.label.split(",").length.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                CommonString.seatLabel,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                widget.label,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Container(
-                      //   height: 50,
-                      //   padding: EdgeInsets.only(left: 20, right: 20),
-                      //   decoration: BoxDecoration(
-                      //       border:
-                      //           Border.all(color: Colors.black, width: 0.3)),
-                      //   child: Center(
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: <Widget>[
-                      //         Text(
-                      //           CommonString.total1,
-                      //           style: TextStyle(
-                      //             fontSize: 20,
-                      //           ),
-                      //         ),
-                      //         Text(
-                      //           "${widget.total} VNĐ",
-                      //           style: TextStyle(
-                      //             fontSize: 20,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.black, width: 0.3)),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                CommonString.total,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                "${widget.total} VNĐ",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      Container(
-                        height: 50,
-                        color: Color.fromRGBO(218, 214, 204, 1),
-                        child: Center(
-                          child: Text(
-                            CommonString.pointInfo,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.black, width: 0.3)),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                CommonString.pointCard,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                "+ "+"${widget.total}",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                CommonString.pointReward,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                "+ "+"${widget.pointreward}",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      // paymentMethodRows("zalopay"),
-                      Container(
-                        height: 50,
-                        color: Color.fromRGBO(218, 214, 204, 1),
-                        child: Center(
-                          child: Text(
-                            CommonString.choosePayment,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ] +
-                    paymentMethods.keys
-                        .map(
-                          (key) => RadioListTile(
-                            value: paymentMethods.keys.toList().indexOf(key),
-                            groupValue: _current,
-                            title: paymentMethodRows(key),
-                            onChanged: (val) {
-                              setState(() {
-                                _current = val;
-                              });
-                            },
-                          ),
-                        )
-                        .toList() +
-                    [confirmButton(context)],
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              flex: 7,
+              child: Container(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  children: <Widget>[
+                        Container(
+                          height: 50,
+                          color: Color.fromRGBO(218, 214, 204, 1),
+                          child: Center(
+                            child: Text(
+                              CommonString.ticketInfo,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 0.3)),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  CommonString.seatAmount,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  widget.label.split(",").length.toString(),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  CommonString.seatLabel,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  widget.label,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Container(
+                        //   height: 50,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   decoration: BoxDecoration(
+                        //       border:
+                        //           Border.all(color: Colors.black, width: 0.3)),
+                        //   child: Center(
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: <Widget>[
+                        //         Text(
+                        //           CommonString.total1,
+                        //           style: TextStyle(
+                        //             fontSize: 20,
+                        //           ),
+                        //         ),
+                        //         Text(
+                        //           "${widget.total} VNĐ",
+                        //           style: TextStyle(
+                        //             fontSize: 20,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 0.3)),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  CommonString.total,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "${widget.total} VNĐ",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Container(
+                          height: 50,
+                          color: Color.fromRGBO(218, 214, 204, 1),
+                          child: Center(
+                            child: Text(
+                              CommonString.pointInfo,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 0.3)),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  CommonString.pointCard,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "+ "+"${widget.total}",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  CommonString.pointReward,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "+ "+"${widget.pointreward}",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // paymentMethodRows("zalopay"),
+                        Container(
+                          height: 50,
+                          color: Color.fromRGBO(218, 214, 204, 1),
+                          child: Center(
+                            child: Text(
+                              CommonString.choosePayment,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ] +
+                      paymentMethods.keys
+                          .map(
+                            (key) => RadioListTile(
+                              value: paymentMethods.keys.toList().indexOf(key),
+                              groupValue: _current,
+                              title: paymentMethodRows(key),
+                              onChanged: (val) {
+                                setState(() {
+                                  _current = val;
+                                });
+                              },
+                            ),
+                          )
+                          .toList() +
+                      [confirmButton(context)],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ));
   }
 
   Widget paymentMethodRows(String name) {
@@ -404,7 +409,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 height: 40,
                 decoration: BoxDecoration(
                   // borderRadius: BorderRadius.circular(10),
-                  color: Colors.red,
+                  color: Colors.red[900],
                 ),
                 child: Center(
                   child: (AutoSizeText(
@@ -762,5 +767,42 @@ class _CheckoutPageState extends State<CheckoutPage> {
           result.last.replaceAll(arr1[i].toUpperCase(), arr2[i].toUpperCase()));
     }
     return result.last;
+  }
+
+  Future _cancelOrder() async{
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    var order = widget.orderId;
+    String url = NccUrl.cancelOrder + order.toString();
+    final response = await http.post(url);
+    if(response.statusCode == 200){
+      // _cancelSelection(prefs);
+      // Navigator.pop(context);
+      print('nani');
+    }
+  }
+
+  // Future _cancelSelection(SharedPreferences prefs) async {
+  //   prefs.setBool("isSelected", false);
+  // }
+
+  Future<bool> _cancelConfirm() async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('Bạn có chắc chắn không muốn tiếp tục đặt vé ?'),
+          actions: [
+            FlatButton(
+              onPressed: ()=>Navigator.of(context).pop(false), 
+              child: Text('TIẾP TỤC')),
+            FlatButton(
+              onPressed: (){
+                _cancelOrder();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+              }, 
+              child: Text('HUỶ'))
+          ],
+        );
+      });
   }
 }

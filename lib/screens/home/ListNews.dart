@@ -34,6 +34,7 @@ class _ListNews extends State<ListNews> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(
+              margin:  EdgeInsets.only(top: 4, bottom: 4),
               child: ListView(
                 physics: NeverScrollableScrollPhysics(),
                 children: (snapshot.data as List<News>).map((data) {
@@ -76,7 +77,10 @@ class _ListNews extends State<ListNews> {
                                   AutoSizeText(
                                     data.title,
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        TextStyle(
+                                          fontSize: 16,
+                                          // fontWeight: FontWeight.bold
+                                          ),
                                     maxLines: 2,
                                   ),
                                 ],

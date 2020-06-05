@@ -44,7 +44,7 @@ class _ListFilms extends State<FilmSchedule> {
                           _scaffoldKey.currentState.openEndDrawer(),
                     ),
                   ],
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.red[900],
                   bottom: new TabBar(
                     tabs: listDay.map<Widget>((day) {
                       String date = DateFormat("dd/MM").format(day["Day"]);
@@ -136,7 +136,7 @@ class _ListFilms extends State<FilmSchedule> {
                     onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
                   ),
                 ],
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.red[900],
               ),
               body: Container(
                 padding: EdgeInsets.all(20),
@@ -149,7 +149,7 @@ class _ListFilms extends State<FilmSchedule> {
                     children: <Widget>[
                       Icon(
                         Icons.error,
-                        color: Colors.red,
+                        color: Colors.red[900],
                         size: 200,
                       ),
                       SizedBox(
@@ -166,7 +166,7 @@ class _ListFilms extends State<FilmSchedule> {
                         height: 20,
                       ),
                       FlatButton(
-                          color: Colors.red,
+                          color: Colors.red[900],
                           child: Text(
                             CommonString.homePage,
                             style: TextStyle(color: Colors.white, fontSize: 16),
