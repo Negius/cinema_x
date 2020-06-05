@@ -35,7 +35,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: Container(
@@ -70,7 +70,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.red[900],
                               width: 1.0,
                               style: BorderStyle.solid),
                         ),
@@ -101,7 +101,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.red[900],
                               width: 1.0,
                               style: BorderStyle.solid),
                         ),
@@ -126,7 +126,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                             TextStyle(color: Colors.black26, fontSize: 15),
                         focusedBorder: new UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.red[900],
                               width: 1.0,
                               style: BorderStyle.solid),
                         ),
@@ -140,7 +140,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                 child: Visibility(
                   child: Text(
                     ErrorPassword.wrongPassword,
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.red[900]),
                   ),
                   visible: (statusCode == 50),
                 ),
@@ -151,7 +151,7 @@ class _ChangePageState extends State<ChangePasswordPage> {
                   width: double.infinity,
                   height: 56,
                   child: RaisedButton(
-                    color: Colors.red,
+                    color: Colors.red[900],
                     onPressed: () {
                       setState(() {
                         onChangePasswordClick(context);

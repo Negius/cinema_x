@@ -44,7 +44,7 @@ class _ListFilms extends State<FilmShowing> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: FutureBuilder(
@@ -94,14 +94,14 @@ class _ListFilms extends State<FilmShowing> {
                                     ),
                                   ),
                                   Text(CommonString.duration.replaceAll(
-                                      "_TL_", data.duration.toString())),
+                                      "_value_", data.duration.toString())),
                                   Row(
                                     children: <Widget>[
                                       AutoSizeText(
                                         data.versionCode,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.red),
+                                            color: Colors.red[900]),
                                       ),
                                     ],
                                   )

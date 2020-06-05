@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/details/MovieDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:cinema_x/config/AppSettings.dart';
 
 class Showing extends StatefulWidget {
   @override
@@ -32,79 +33,103 @@ class _ShowingState extends State<Showing> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Colors.blueGrey[900],
+      color: Color(0xFF222222),
       child: imgSlider(context),
     );
-  } 
+  }
 
   Widget imgSlider(BuildContext context) {
     return FutureBuilder(
         future: _showingMovies,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            imgList = snapshot.data.map((m) => m.imageUrl as String).toList();
-            nameList = snapshot.data.map((m) => m.name as String).toList();
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                CarouselSlider(
-                  height: 405.0,
-                  initialPage: 0,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
-                  items: imgList.map((imgUrl) {
-                    return Builder(builder: (BuildContext context) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MovieDetailsPage(
-                                movie: snapshot.data[_current],
+            if (snapshot.data.length > 0) {
+              imgList = snapshot.data.map((m) => m.imageUrl as String).toList();
+              nameList = snapshot.data.map((m) => m.name as String).toList();
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CarouselSlider(
+                    height: 405.0,
+                    initialPage: 0,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
+                    items: imgList.map((imgUrl) {
+                      return Builder(builder: (BuildContext context) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailsPage(
+                                  movie: snapshot.data[_current],
+                                ),
                               ),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              //  image: DecorationImage(
+                              //   image: AssetImage("assets/images/background.jpg"),
+                              //   fit: BoxFit.cover,
+                              // ),
+                              color: Color(0xFF222222),
                             ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
+                            child: Image.network(
+                              imgUrl as String,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          child: Image.network(
-                            imgUrl as String,
-                            fit: BoxFit.fill,
+                        );
+                      });
+                    }).toList(),
+                  ),
+                  SizedBox(
+                    height: 50.0,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        child: AutoSizeText(
+                          nameList[_current],
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 2,
                         ),
-                      );
-                    });
-                  }).toList(),
-                ),
-                SizedBox(
-                  height: 50.0,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                      child: AutoSizeText(
-                        nameList[_current],
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.white,
-                        ),
-                        maxLines: 2,
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      CommonString.emptySchedules,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
+                ],
+              );
+            }
           } else
-            return Column();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
         });
   }
 }

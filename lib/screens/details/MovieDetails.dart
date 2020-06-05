@@ -1,15 +1,23 @@
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/Movie.dart';
+import 'package:cinema_x/models/actor.dart';
+import 'package:cinema_x/models/watchedFilm.dart';
 import 'package:cinema_x/screens/details/movie_detail_header.dart';
+import 'package:cinema_x/screens/details/photo_scroller.dart';
 import 'package:cinema_x/screens/details/story_line.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
-import 'package:youtube_player/youtube_player.dart';
+// import 'package:youtube_player/youtube_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import 'actor_scroller.dart';
+
 
 class MovieDetailsPage extends StatefulWidget {
   MovieDetailsPage({Key key, this.movie}) : super(key: key);
   final Movie movie;
+  // final Watched watch;
 
   @override
   _MovieDetailsPageState createState() => _MovieDetailsPageState();
@@ -18,7 +26,8 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String videoUrl;
-  VideoPlayerController _videoController;
+  // VideoPlayerController _videoController; 
+  YoutubePlayerController _videoController;
   bool isMute = false;
   bool isExpanded = false;
   String movieInfo;
@@ -36,12 +45,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
     movieInfo = CommonString.movieInfo
         .replaceFirst(
-            "_TL_",
+            "_value0_",
             widget.movie.categories
                 .map((c) => ReCase(c).sentenceCase)
                 .join(", "))
-        .replaceFirst("_DD_", widget.movie.director)
-        .replaceFirst("_DV_", widget.movie.actorsName.join(", "));
+        .replaceFirst("_value1_", widget.movie.director)
+        .replaceFirst("_value2_", widget.movie.actorsName.join(", "));
   }
 
   @override
@@ -49,7 +58,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return Scaffold(
       endDrawer: MenuBar(),
       key: _scaffoldKey,
-      backgroundColor: Color.fromRGBO(39, 50, 56, 1),
+      // backgroundColor: Color.fromRGBO(39, 50, 56, 1),
+      backgroundColor: Color(0xFF222222),
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -69,7 +79,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           SizedBox(
                             height: 20,
                           ),
-                          _trailer(context, videoUrl)
+                          _trailer(videoUrl)
                         ],
                       )
                     : Container(),
@@ -89,9 +99,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         ),
                       ],
                     )),
-                // PhotoScroller([movie.imageUrl]),
+                // PhotoScroller([widget.movie.imageUrl]),
                 // SizedBox(height: 20.0),
-                // ActorScroller(movie.actorsName
+                // ActorScroller(widget.movie.actorsName
                 //     .map((name) => Actor(name: name, avatarUrl: ""))
                 //     .toList()),
                 // SizedBox(height: 30.0),
@@ -104,6 +114,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             right: 0.0,
             child: AppBar(
               backgroundColor: Colors.transparent,
+              elevation: 0.0,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
@@ -121,57 +132,107 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     );
   }
 
-  Widget _trailer(context, url) {
+  // Widget _trailer(context, url) {
+  //   return Column(
+  //     children: <Widget>[
+  //       YoutubePlayer(
+  //         context: context,
+  //         source: url,
+  //         quality: YoutubeQuality.HIGH,
+  //         aspectRatio: 16 / 9,
+  //         autoPlay: false,
+  //         loop: false,
+  //         reactToOrientationChange: true,
+  //         startFullScreen: false,
+  //         controlsActiveBackgroundOverlay: true,
+  //         controlsTimeOut: Duration(seconds: 4),
+  //         playerMode: YoutubePlayerMode.DEFAULT,
+  //         callbackController: (controller) {
+  //           _videoController = controller;
+  //         },
+  //         onError: (error) {
+  //           print(error);
+  //         },
+  //       ),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: <Widget>[
+  //           IconButton(
+  //               icon: _videoController != null
+  //                   ? _videoController.value.isPlaying
+  //                       ? Icon(Icons.pause)
+  //                       : Icon(Icons.play_arrow)
+  //                   : Icon(Icons.play_arrow),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   _videoController.value.isPlaying
+  //                       ? _videoController.pause()
+  //                       : _videoController.play();
+  //                 });
+  //               }),
+  //           IconButton(
+  //             icon: Icon(isMute ? Icons.volume_off : Icons.volume_up),
+  //             onPressed: () {
+  //               _videoController.setVolume(isMute ? 1 : 0);
+  //               setState(
+  //                 () {
+  //                   isMute = !isMute;
+  //                 },
+  //               );
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Widget _trailer (url){
+    String videoId;
+    videoId = YoutubePlayer.convertUrlToId(url);
     return Column(
       children: <Widget>[
         YoutubePlayer(
-          context: context,
-          source: url,
-          quality: YoutubeQuality.HIGH,
-          aspectRatio: 16 / 9,
-          autoPlay: false,
-          loop: false,
-          reactToOrientationChange: true,
-          startFullScreen: false,
-          controlsActiveBackgroundOverlay: true,
-          controlsTimeOut: Duration(seconds: 4),
-          playerMode: YoutubePlayerMode.DEFAULT,
-          callbackController: (controller) {
-            _videoController = controller;
-          },
-          onError: (error) {
-            print(error);
-          },
+          controller : YoutubePlayerController(
+            initialVideoId: videoId,
+            flags: YoutubePlayerFlags(
+              autoPlay: true,
+              mute: false,
+              disableDragSeek: false,
+              loop: true,
+              forceHD: true,
+              enableCaption: false,
+            ))
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-                icon: _videoController != null
-                    ? _videoController.value.isPlaying
-                        ? Icon(Icons.pause)
-                        : Icon(Icons.play_arrow)
-                    : Icon(Icons.play_arrow),
-                onPressed: () {
-                  setState(() {
-                    _videoController.value.isPlaying
-                        ? _videoController.pause()
-                        : _videoController.play();
-                  });
-                }),
-            IconButton(
-              icon: Icon(isMute ? Icons.volume_off : Icons.volume_up),
-              onPressed: () {
-                _videoController.setVolume(isMute ? 1 : 0);
-                setState(
-                  () {
-                    isMute = !isMute;
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: <Widget>[
+        //     IconButton(
+        //         icon: _videoController != null
+        //             ? _videoController.value.isPlaying
+        //                 ? Icon(Icons.pause)
+        //                 : Icon(Icons.play_arrow)
+        //             : Icon(Icons.play_arrow),
+        //         onPressed: () {
+        //           setState(() {
+        //             _videoController.value.isPlaying
+        //                 ? _videoController.pause()
+        //                 : _videoController.play();
+        //           });
+        //         }),
+        //     IconButton(
+        //       icon: Icon(isMute ? Icons.volume_off : Icons.volume_up),
+        //       onPressed: () {
+        //         _videoController.setVolume(isMute ? 1 : 0);
+        //         setState(
+        //           () {
+        //             isMute = !isMute;
+        //           },
+        //         );
+        //       },
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

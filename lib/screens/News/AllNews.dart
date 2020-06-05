@@ -39,7 +39,7 @@ class _ListNews extends State<ListAllNews> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       //  resizeToAvoidBottomPadding: false,
       body: FutureBuilder(

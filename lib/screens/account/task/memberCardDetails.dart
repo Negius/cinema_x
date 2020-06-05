@@ -30,7 +30,7 @@ class _MemberCardPageState extends State<MemberCardPage> {
             onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
           ),
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red[900],
       ),
       body: FutureBuilder(
           future: _cardInfo,

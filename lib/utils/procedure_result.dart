@@ -22,7 +22,7 @@ class _ProcedureResultPageState extends State<ProcedureResultPage> {
         children: <Widget>[
           Icon(
             widget.statusCode == 30 ? Icons.check_circle : Icons.error,
-            color: widget.statusCode == 30 ? Colors.green : Colors.red,
+            color: widget.statusCode == 30 ? Colors.green : Colors.red[900],
             size: 150,
           ),
           SizedBox(
@@ -37,7 +37,7 @@ class _ProcedureResultPageState extends State<ProcedureResultPage> {
             height: 25,
           ),
           FlatButton(
-            color: widget.statusCode == 30 ? Colors.green : Colors.red,
+            color: widget.statusCode == 30 ? Colors.green : Colors.red[900],
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => UserInfoPage()));

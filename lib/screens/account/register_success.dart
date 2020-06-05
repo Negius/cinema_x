@@ -28,17 +28,17 @@ class _RegisterSuccessPageState extends State<RegisterSuccessPage> {
                     )
                   : Icon(
                       Icons.error,
-                      color: Colors.red,
+                      color: Colors.red[900],
                       size: 200,
                     ),
               Text(
                 widget.message,
                 style: TextStyle(
                     fontSize: 20,
-                    color: widget.code == 30 ? Colors.green : Colors.red),
+                    color: widget.code == 30 ? Colors.green : Colors.red[900]),
               ),
               FlatButton(
-                color: widget.code == 30 ? Colors.green : Colors.red,
+                color: widget.code == 30 ? Colors.green : Colors.red[900],
                 child: Text(
                   widget.code == 30 ? CommonString.homePage : CommonString.back,
                   style: TextStyle(color: Colors.white, fontSize: 18),

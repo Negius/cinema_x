@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'package:cinema_x/screens/booking/onePageCheckout.dart';
+import 'package:cinema_x/screens/home/Home.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/screens/payment/paymentCheckout.dart';
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:webview_flutter/webview_flutter.dart';
-
+import 'package:cinema_x/utils/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+//payment index temp
 class PaymentIndexPage extends StatefulWidget {
   PaymentIndexPage({@required this.url}) : super();
   final String url;
@@ -11,100 +16,85 @@ class PaymentIndexPage extends StatefulWidget {
   _PaymentIndexPageState createState() => _PaymentIndexPageState();
 }
 
-class _PaymentIndexPageState extends State<PaymentIndexPage> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
-  // String url = widget.url;
+class _PaymentIndexPageState extends State<PaymentIndexPage>{
+  InAppWebViewController webView;
+
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Builder(builder: (BuildContext context) {
-        return WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-          },
-          // ignore: prefer_collection_literals
-          javascriptChannels: <JavascriptChannel>[
-            _toasterJavascriptChannel(context),
-          ].toSet(),
-          navigationDelegate: (NavigationRequest request) {
-            if (request.url.startsWith(PaymentUrl.vnpayResult)) {
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PaymentCheckoutPage(
-                              url: request.url,
-                            )));
-                // this.deactivate();
-              });
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-          onPageStarted: (String url) {
-            //bat url va xu ly
-            if (url.contains("CheckOut/")) {
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PaymentCheckoutPage(
-                              url: url,
-                            )));
-                // this.deactivate();
-              });
-            }
-          },
-          onPageFinished: (String url) {
-            print('Page finished loading: $url');
-          },
-          
-          gestureNavigationEnabled: true,
-        );
-      }),
-    );
-  }
-
-  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-        name: 'Toaster',
-        onMessageReceived: (JavascriptMessage message) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        });
-  }
-
-  Widget favoriteButton() {
-    return FutureBuilder<WebViewController>(
-        future: _controller.future,
-        builder: (BuildContext context,
-            AsyncSnapshot<WebViewController> controller) {
-          if (controller.hasData) {
-            return FloatingActionButton(
-              onPressed: () async {
-                final String url = await controller.data.currentUrl();
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text('Favorited $url')),
-                );
-              },
-              child: const Icon(Icons.favorite),
-            );
-          }
-          return Container();
-        });
-  }
-
-  @override
   void dispose() {
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _cancelConfirm,
+      child: Scaffold(
+      appBar: AppBar(
+        title: const Text('Thanh toán'),
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: ()=>Navigator.pop(context)),
+      ),
+      body: InAppWebView(
+        initialUrl: widget.url,
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+              debuggingEnabled: true,
+          )
+        ),
+        onWebViewCreated: (InAppWebViewController controller) {
+          webView = controller;
+        },
+        onLoadStart: (InAppWebViewController controller, String url) {
+          if (url.contains("CheckOut/")) {
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PaymentCheckoutPage(
+                                url: url,
+                              )));
+                });
+              }
+            },
+        )
+    ));
+  }
+
+  Future _cancelOrder() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var order = prefs.getInt("orderId");
+    String url = NccUrl.cancelOrder + order.toString();
+    final response = await http.post(url);
+    if(response.statusCode == 200){
+      // _cancelSelection(prefs);
+      // Navigator.pop(context);
+      print('nani');
+    }
+  }
+
+    Future<bool> _cancelConfirm() async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('Bạn có chắc chắn không muốn tiếp tục đặt vé ?'),
+          actions: [
+            FlatButton(
+              onPressed: ()=>Navigator.of(context).pop(false), 
+              child: Text('TIẾP TỤC')),
+            FlatButton(
+              onPressed: (){
+                _cancelOrder();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+              }, 
+              child: Text('HUỶ'))
+          ],
+        );
+      });
+  }
+  
 }
