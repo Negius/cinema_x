@@ -24,7 +24,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<User> _user;
 
-
   @override
   void initState() {
     _user = getUserInfo();
@@ -93,7 +92,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                                     new TextSpan(children: <TextSpan>[
                                       new TextSpan(
                                         text: CommonString.memberCard + ": ",
-                                        style: TextStyle(color: Colors.red[900]),
+                                        style:
+                                            TextStyle(color: Colors.red[900]),
                                       ),
                                       new TextSpan(
                                         text: user.cardCode,
@@ -120,7 +120,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                               margin: EdgeInsets.only(top: 75, right: 20),
                               child: Text(
                                 user.cardLevelName,
-                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 9, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -462,16 +463,16 @@ class _UserInfoPageState extends State<UserInfoPage> {
           },
         ));
   }
-  
+
   Future<User> getUserInfo() async {
     var user = new User();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String api = NccUrl.userInfo + prefs.getInt("customerId").toString();
     var response = await http.post(api);
     // _scheduleNotification();
-    if (response.statusCode == 200) { 
+    if (response.statusCode == 200) {
       Map parsed = json.decode(response.body);
-      
+
       var pr = parsed["PointReward"] as double;
       var pc = parsed["PointCard"] as double;
       prefs.setDouble("pointReward", pr);
