@@ -46,6 +46,9 @@ class NccUrl {
   static const String changePassword =
       "http://testapi.chieuphimquocgia.com.vn/api/ChangePassword?";
 
+    static const String passwordRecovery =
+      "http://testapi.chieuphimquocgia.com.vn/api/PasswordRecovery?email=";
+
   static const String login =
       "http://testapi.chieuphimquocgia.com.vn/api/LoginApp?";
 
@@ -69,6 +72,9 @@ class NccUrl {
 
       static const String cancelOrder =
       "http://testapi.chieuphimquocgia.com.vn/api/CancelOrder?OrderId=";
+      
+      static const String giftCard =
+      "http://testapi.chieuphimquocgia.com.vn/api/Voucher";
       
 
 }

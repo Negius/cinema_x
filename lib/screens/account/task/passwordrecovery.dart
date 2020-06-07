@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/config/ValidateError.dart';
 import 'package:cinema_x/utils/procedure_result.dart';
+import 'package:cinema_x/screens/account/login_page.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,9 +18,7 @@ class _ChangePageState extends State<Passwordrecovery> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   final passController = TextEditingController();
-  String _oldPassword;
-  String _newPassword;
-  String _retype;
+  String _emailRecovery;
   bool _showPass = false;
   int statusCode = 0;
   @override
@@ -61,7 +60,7 @@ class _ChangePageState extends State<Passwordrecovery> {
                   alignment: AlignmentDirectional.centerEnd,
                   children: <Widget>[
                     TextFormField(
-                      onSaved: (value) => _oldPassword = value,
+                      onSaved: (value) => _emailRecovery = value,
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       // obscureText: !_showPass,
                       decoration: InputDecoration(
@@ -198,20 +197,23 @@ class _ChangePageState extends State<Passwordrecovery> {
     final form = _formKey.currentState;
     form.save();
     if (form.validate()) {
-      String url = NccUrl.changePassword +
-          "userId=$id&Password=$_oldPassword&_PassNew=$_newPassword";
+      String url = NccUrl.passwordRecovery + _emailRecovery;
       var response = await http.post(url);
       if (response.statusCode == 200) {
-        var body = json.decode(response.body);
-        setState(() {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProcedureResultPage(
-                        statusCode: body["StatusCode"],
-                        message: body["Status"],
-                      )));
-        });
+        showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Thư hướng dẫn đã được gửi đến Email của bạn!'),
+                          actions: [
+            FlatButton(
+              onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              }, 
+              child: Text('TIẾP TỤC')),
+          ],
+                          );
+                    });
       }
     }
   }

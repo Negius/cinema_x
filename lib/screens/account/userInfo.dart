@@ -6,7 +6,9 @@ import 'package:cinema_x/screens/account/task/changePassword.dart';
 import 'package:cinema_x/screens/films/TicketHistory.dart';
 import 'package:cinema_x/screens/films/WatchedFilm.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
+import 'package:cinema_x/utils/GiftCard.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -23,9 +25,11 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<User> _user;
+  
 
   @override
   void initState() {
+    
     _user = getUserInfo();
     super.initState();
   }
@@ -40,6 +44,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var user = snapshot.data as User;
+              String pc = NumberFormat.currency(locale: 'vi').format(user.pointCard.round());
               return Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[
@@ -141,9 +146,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
                                     maxLines: 1,
                                   ),
                                   AutoSizeText(
-                                    user.pointCard.round().toString() + " đ",
+                                    pc,
                                     maxLines: 1,
-                                    minFontSize: 25,
+                                    minFontSize: 20,
                                   ),
                                 ],
                               ),
@@ -160,7 +165,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                                   AutoSizeText(
                                     user.pointReward.round().toString() + " đ",
                                     maxLines: 1,
-                                    minFontSize: 25,
+                                    minFontSize: 20,
                                   ),
                                 ],
                               ),
@@ -425,7 +430,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => WatchedFilm()));
+                                    builder: (context) => GiftCardPage()));
                           },
                         ),
                       ],

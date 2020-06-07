@@ -5,9 +5,11 @@ class TicketInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text('Thông tin giá vé')
       ),
       body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 7, vertical: 30),
         child: ListView(
           children: [
             SizedBox(height: 30),

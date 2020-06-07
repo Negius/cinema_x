@@ -41,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    return new Scaffold(
+    return new WillPopScope(
+      onWillPop: _closeConfirm, 
+      child: Scaffold(
       endDrawer: MenuBar(),
       key: _scaffoldKey,
       body: Stack(
@@ -89,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       //)
-    );
+    ));
   }
 
   Widget imageSliderCarousel() {
@@ -206,4 +208,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
  }
+
+ Future<bool> _closeConfirm() async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Bạn muốn đóng ứng dụng ?'),
+          actions: [
+            FlatButton(
+              onPressed: ()=>Navigator.of(context).pop(false), 
+              child: Text('HUỶ')),
+            FlatButton(
+              onPressed: (){
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              }, 
+              child: Text('ĐỒNG Ý'))
+          ],
+        );
+      });
+  }
 }

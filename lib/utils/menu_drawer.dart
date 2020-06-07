@@ -211,15 +211,15 @@ class _MenuBarState extends State<MenuBar> {
                       flex: 1,
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            "Điểm thẻ",
+                          AutoSizeText(
+                          CommonString.cardPoint,
                             style:
                                 _textTheme.caption.copyWith(color: Colors.grey),
                           ),
-                          Text(
+                          AutoSizeText(
                             pointCard.toString() ?? "0",
-                            style: _textTheme.body1
-                                .copyWith(color: Colors.white, fontSize: 30),
+                            style: _textTheme.bodyText1
+                                .copyWith(color: Colors.white, fontSize: 25),
                           ),
                         ],
                       ),
@@ -228,15 +228,15 @@ class _MenuBarState extends State<MenuBar> {
                       flex: 1,
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            "Điểm thưởng",
+                          AutoSizeText(
+                            CommonString.rewardPoint,
                             style:
                                 _textTheme.caption.copyWith(color: Colors.grey),
                           ),
-                          Text(
+                          AutoSizeText(
                             pointReward.toString() ?? "0",
-                            style: _textTheme.body1
-                                .copyWith(color: Colors.white, fontSize: 30),
+                            style: _textTheme.bodyText1
+                                .copyWith(color: Colors.white, fontSize: 25),
                           ),
                         ],
                       ),
