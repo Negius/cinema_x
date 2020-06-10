@@ -4,6 +4,7 @@ import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/details/MovieDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_x/config/AppSettings.dart';
+import 'package:intl/intl.dart';
 
 class Showing extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class _ShowingState extends State<Showing> {
   Future<List<Movie>> _showingMovies;
   List imgList;
   List nameList;
+  List dateList;
+  List formattedDateList;
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
@@ -33,7 +36,7 @@ class _ShowingState extends State<Showing> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Color(0xFF222222),
+      color: Colors.black,
       child: imgSlider(context),
     );
   }
@@ -45,7 +48,11 @@ class _ShowingState extends State<Showing> {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
               imgList = snapshot.data.map((m) => m.imageUrl as String).toList();
-              nameList = snapshot.data.map((m) => m.name as String).toList();
+              nameList = snapshot.data.map((m) => filmTitle(m.name)).toList();
+              dateList = snapshot.data.map((m) => Text(
+                'Khởi chiếu: '+ DateFormat('dd-MM-yyyy').format(DateTime.parse(m.premieredDay)),
+                style: TextStyle(color: Colors.brown[200],)))
+                .toList();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,11 +83,11 @@ class _ShowingState extends State<Showing> {
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                              //  image: DecorationImage(
-                              //   image: AssetImage("assets/images/background.jpg"),
-                              //   fit: BoxFit.cover,
-                              // ),
-                              color: Color(0xFF222222),
+                               image: DecorationImage(
+                                image: AssetImage("assets/images/background.jpg"),
+                                fit: BoxFit.cover,
+                              ),
+                              // color: Colors.black,
                             ),
                             child: Image.network(
                               imgUrl as String,
@@ -96,15 +103,19 @@ class _ShowingState extends State<Showing> {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                        child: AutoSizeText(
-                          nameList[_current],
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 2,
-                        ),
+                        child: Column(
+                          children: <Widget>[
+                            nameList[_current],
+                            dateList[_current]
+                          ],)
+                        // RichText(
+                          // style: TextStyle(
+                          //   fontSize: 16.0,
+                          //   color: Colors.white,
+                          //   fontWeight: FontWeight.bold,
+                          // ),
+                          // maxLines: 2,
+                        // ),
                       ),
                     ),
                   ),

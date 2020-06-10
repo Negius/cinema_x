@@ -47,10 +47,11 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
     var movieInformation = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.movie.name,
-          style: textTheme.title,
-        ),
+        // Text(
+        //   widget.movie.name,
+        //   style: textTheme.title,
+        // ),
+        filmTitle(widget.movie.name),
         SizedBox(height: 8.0),
         Row(children: [_buildCategoryChips(textTheme)]),
         Row(

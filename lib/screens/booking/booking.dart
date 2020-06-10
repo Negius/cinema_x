@@ -4,6 +4,7 @@ import 'package:cinema_x/models/Session.dart';
 import 'package:cinema_x/screens/booking/seatSelection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingPage extends StatefulWidget {
   BookingPage({Key key, this.movie}) : super(key: key);
@@ -173,7 +174,11 @@ class _BookingPageState extends State<BookingPage> {
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.grey
                       : Colors.black12)),
-          onPressed: () {
+          onPressed: () async{//
+            String onDate = Text(DateFormat('dd-MM-yyyy').format(time["dateTimeFull"])).toString();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('time', time["time"].toString());
+            prefs.setString('date', onDate);
             Navigator.of(context).push(
               MaterialPageRoute(
                 fullscreenDialog: true,

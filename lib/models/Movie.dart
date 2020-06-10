@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cinema_x/config/AppSettings.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,4 +108,54 @@ Future<List<Movie>> fetchComingMovies() async {
   }
 }
 
-
+RichText filmTitle(name){
+  String age;
+  if(name.contains('- P')){
+    age = name.substring(name.length-1);
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        children: [
+          TextSpan(text: name.substring(0, name.length-1), ),
+          TextSpan(text: age, style: TextStyle(color: Colors.green[600], ))
+        ]
+      ));
+  }
+  if(name.contains('- C18')){
+    age = name.substring(name.length-3);
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        children: [
+          TextSpan(text: name.substring(0, name.length-3)),
+          TextSpan(text: age, style: TextStyle(color: Colors.red[600]))
+        ]
+      ));
+  }
+  if(name.contains('- C16')){
+    age = name.substring(name.length-3);
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        children: [
+          TextSpan(text: name.substring(0, name.length-3)),
+          TextSpan(text: age, style: TextStyle(color: Colors.orange[600]))
+        ]
+      ));
+  }
+  if(name.contains('- C13')){
+    age = name.substring(name.length-3);
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        children: [
+          TextSpan(text: name.substring(0, name.length-3)),
+          TextSpan(text: age, style: TextStyle(color: Colors.yellow[600]))
+        ]
+      ));
+  }
+}

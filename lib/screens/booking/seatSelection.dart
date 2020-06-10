@@ -21,6 +21,7 @@ class SeatSelection extends StatefulWidget {
   final Movie movie;
   final int planId;
   final DateTime dateTimeFull;
+  
   @override
   _SeatSelectionState createState() {
     return _SeatSelectionState();
@@ -390,7 +391,8 @@ class _SeatSelectionState extends State<SeatSelection> {
   }
 
   //Chọn ghế
-  void seatSelect(BuildContext context, Map<dynamic, dynamic> seat) {
+  Future seatSelect(BuildContext context, Map<dynamic, dynamic> seat) async {
+    
     setState(() {
       if (seatSelected.contains(seat)) {
         canChangeSeat = hasEmptySpace(seat, 1);
@@ -419,7 +421,7 @@ class _SeatSelectionState extends State<SeatSelection> {
   }
 
   //Chọn ghế đôi
-  void coupleSeatSelect(Map<dynamic, dynamic> seat, int option) {
+  Future coupleSeatSelect(Map<dynamic, dynamic> seat, int option) async {    
     var coupleSeatList = baseList.where((value) => value["type"] == 2).toList();
     var index = coupleSeatList.indexOf(seat);
     if (index != -1) {
@@ -439,6 +441,8 @@ class _SeatSelectionState extends State<SeatSelection> {
         seatSelected.remove(seat);
         seatSelected.remove(coupleSeat);
       }
+      // print(seat);//
+      // print(prefs.getString("coupleSeat"));
     }
   }
 
@@ -518,7 +522,8 @@ class _SeatSelectionState extends State<SeatSelection> {
               ),
               GestureDetector(
                 onTap: () {
-                  if(seatSelected.isNotEmpty){//
+                  // isSeatSelected();
+                  if(seatSelected.isNotEmpty){               
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -597,10 +602,23 @@ class _SeatSelectionState extends State<SeatSelection> {
     );
   }
 
+  Future isSeatSelected() async {
+    bool isSelected = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isSelected = prefs.getBool("isSelected");
+    if(isSelected=!isSelected){
+      seatSelected=[];
+    }
+    // else{
+    //   seatSelected=seatSelected;
+    // }
+  }
+
   void createOrder(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var listChairValueF1 = seatSelected.map((s) => s["label"]).join(",");
+    var listChairValueF1 = seatSelected.map((s) => s["label"]).join(", ");
     var seatsF1 = seatSelected.map((s) => s["seat"]).join(",");
+    prefs.setString('seat', listChairValueF1);
     String url = NccUrl.createOrder;
 
     Map<String, String> headers = {
@@ -612,14 +630,9 @@ class _SeatSelectionState extends State<SeatSelection> {
       "customerId": prefs.getInt("customerId") ?? 0,
       "planScreenId": widget.planId ?? 0,
       "seatsF1": seatsF1,
-      "seatsF2": "",
-      "seatsF3": "",
       "ListChairValueF1": listChairValueF1,
-      "ListChairValueF2": "",
-      "ListChairValueF3": "",
       "CustomerFirstName": prefs.getString("firstName") ?? "",
       "CustomerLastName": prefs.getString("lastName") ?? "",
-      "MemberCardCode": prefs.getString("cardCode") ?? "",
       "CustomerEmail": prefs.getString("email") ?? "",
       "CustomerPhone": prefs.getString("phone") ?? "",
       "PaymentMethodSystemName":
@@ -629,8 +642,9 @@ class _SeatSelectionState extends State<SeatSelection> {
         headers: headers, body: json.encode(body));
     var parsed = json.decode(response.body);
     var orderId = parsed["OrderId"];
-    var total = (parsed["OrderTotal"] as double).toInt() ?? 0;
     prefs.setInt("orderId", orderId);
+    var total = (parsed["OrderTotal"] as double).toInt() ?? 0;
+    
 
     var pointReward ;
     var cardlevel = prefs.getString("cardLevelName") ?? "";

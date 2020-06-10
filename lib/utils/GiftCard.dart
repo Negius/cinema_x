@@ -16,6 +16,7 @@ class _GiftCardPageState extends State<GiftCardPage> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,79 +40,41 @@ class _GiftCardPageState extends State<GiftCardPage> {
               return Container(
                 child: ListView(
                   children: (snapshot.data as List<GiftCard>).map((data) {
+                    String tkPrice = data.price.toString();
+                    String shownPrice = tkPrice.substring(0, tkPrice.length-2);
+                    String giftPoint = data.point.toString();
+                    String exchangePoint = giftPoint.substring(0, giftPoint.length-2);
+                  
                     return GestureDetector(
                       onTap: (){},
                       child: Card(
                         margin: EdgeInsets.all(5),
-                        elevation: 1.0,
-                        color: Colors.orange[900],
+                        elevation: 2.0,
+                        shadowColor: Colors.grey,
+                        // color: Colors.orange[900],
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
+                          child: Row(
                             children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      // Flexible(
-                                      //   fit: FlexFit.tight,
-                                      //   child:
-                                        Text(data.name, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)
-                                        // )
-                                        ),
-                                      SizedBox(height: 10),
-                                      // Flexible(
-                                      //   fit: FlexFit.tight,
-                                      //   child: 
-                                        Text('NCC', style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold)
-                                        // )
-                                        ), 
-                                      // Divider(thickness: 3, color: Colors.white,),
-                                      // Divider(thickness: 3, color: Colors.white,),
-                                    ] 
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    // width: 70,
-                                    child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: <Widget>[
-                                      // Flexible(
-                                      //   fit: FlexFit.tight,
-                                      //   child: 
-                                        Row(
-                                        children: <Widget>[
-                                          Icon(Icons.star_border, size: 5.0, color: Colors.white),
-                                          Icon(Icons.star_half, size: 7.0, color: Colors.white),
-                                          Icon(Icons.star, size: 10, color: Colors.white)
-                                        ]
-                                        // )
-                                        ),
-                                      // Flexible(
-                                      //   fit: FlexFit.tight,
-                                      //   child: 
-                                        Row(
-                                        children: <Widget>[
-                                          Image.asset('assets/images/gift.png', height: 20, width: 20, fit: BoxFit.scaleDown, color: Colors.white)
-                                        ]
-                                      // )
-                                      ),
-                                      // Flexible(
-                                      //   fit: FlexFit.tight,
-                                        // child: 
-                                        Row(
-                                        children: <Widget>[
-                                          Image.asset('assets/images/popcorn.png', height: 20, width: 20, fit: BoxFit.scaleDown, color: Colors.white),
-                                          Image.asset('assets/images/beverage.png', height: 20, width: 20, fit: BoxFit.scaleDown, color: Colors.white)
-                                        ]
-                                      )
-                                      // )
-                                    ]
-                                  )
-                                  )
+                              Column(
+                                children:<Widget>[
+                                  getImage(data.name),
+                                  SizedBox(height: 10),
+                                  Image.asset('assets/images/logo_home.png', height: 30, width: 30, alignment: Alignment.center, fit: BoxFit.contain,),
                                 ]
                               ),
-                              Text(data.price.toString() + 'đ', style: TextStyle(color: Colors.white,fontSize: 40, fontWeight: FontWeight.bold),)
+                              SizedBox(width:20),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children:<Widget>[
+                                    Text(data.name, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.red[900])),
+                                    SizedBox(height: 20),
+                                    Text(shownPrice + ' đ', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                                    SizedBox(height: 10),
+                                    Text('Điểm quy đổi: '+ exchangePoint, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.blue))
+                                  ]
+                              ))
                             ]
                           ),
                         )
@@ -134,5 +97,18 @@ class _GiftCardPageState extends State<GiftCardPage> {
           } 
         }),
     );
+  }
+
+  Image getImage(name) {
+    double iconDimension = 80;
+    if(name.contains('Bắp')){
+      return Image.asset('assets/images/popcorn.png', height: iconDimension, width: iconDimension, fit: BoxFit.scaleDown);
+    }
+    if(name.contains('Vé')){
+      return Image.asset('assets/images/film.png', height: iconDimension, width: iconDimension, fit: BoxFit.scaleDown);
+    }   
+    if(name.contains('Nước')){
+      return Image.asset('assets/images/beverage.png', height: iconDimension, width: iconDimension, fit: BoxFit.scaleDown);
+    }
   }
 }

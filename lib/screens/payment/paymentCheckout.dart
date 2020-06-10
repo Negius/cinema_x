@@ -418,9 +418,10 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     await flutterLocalNotificationsPluginAfterPurchase.show(
       0,
       'Giao dịch thành công',
-      'Bạn đã mua vé phim ${prefs.get("movieName")} vào lúc .....',
+      'Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ${prefs.getString("seat")}, khung chiếu ${prefs.getString("time")} ngày ${prefs.getString('date')}',
       platformChannelSpecifics,
       payload: 'No_Sound',
     );
   }
 }
+
