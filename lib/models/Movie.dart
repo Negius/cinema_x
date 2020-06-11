@@ -20,7 +20,7 @@ class Movie {
   String videoUrl;
   String versionCode;
   String premieredDay;
-   String countryName;
+  String countryName;
 
   Movie(
       {this.id,
@@ -108,16 +108,16 @@ Future<List<Movie>> fetchComingMovies() async {
   }
 }
 
-RichText filmTitle(name){
+RichText filmTitle(name, color){
   String age;
   if(name.contains('- P')){
     age = name.substring(name.length-1);
     return RichText(
       maxLines: 2,
       text: TextSpan(
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
         children: [
-          TextSpan(text: name.substring(0, name.length-1), ),
+          TextSpan(text: name.substring(0, name.length-1)),
           TextSpan(text: age, style: TextStyle(color: Colors.green[600], ))
         ]
       ));
@@ -127,7 +127,7 @@ RichText filmTitle(name){
     return RichText(
       maxLines: 2,
       text: TextSpan(
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
         children: [
           TextSpan(text: name.substring(0, name.length-3)),
           TextSpan(text: age, style: TextStyle(color: Colors.red[600]))
@@ -139,7 +139,7 @@ RichText filmTitle(name){
     return RichText(
       maxLines: 2,
       text: TextSpan(
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
         children: [
           TextSpan(text: name.substring(0, name.length-3)),
           TextSpan(text: age, style: TextStyle(color: Colors.orange[600]))
@@ -151,7 +151,7 @@ RichText filmTitle(name){
     return RichText(
       maxLines: 2,
       text: TextSpan(
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
         children: [
           TextSpan(text: name.substring(0, name.length-3)),
           TextSpan(text: age, style: TextStyle(color: Colors.yellow[600]))
@@ -159,3 +159,5 @@ RichText filmTitle(name){
       ));
   }
 }
+
+

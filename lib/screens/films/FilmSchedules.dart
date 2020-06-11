@@ -100,12 +100,13 @@ class _ListFilms extends State<FilmSchedule> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                            AutoSizeText(
-                                              movie.name,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 2,
-                                            ),
+                                            // AutoSizeText(
+                                            //   movie.name,
+                                            //   style: TextStyle(
+                                            //       fontWeight: FontWeight.bold),
+                                            //   maxLines: 2,
+                                            // ),
+                                          filmTitle(movie.name, Colors.black),
                                           ] +
                                           splittedSessionList
                                               .map<Widget>((t) =>

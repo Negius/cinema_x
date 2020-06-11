@@ -36,7 +36,7 @@ class _ShowingState extends State<Showing> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Color(0xFF222222),
+      color: Colors.black,
       child: imgSlider(context),
     );
   }
@@ -48,7 +48,7 @@ class _ShowingState extends State<Showing> {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
               imgList = snapshot.data.map((m) => m.imageUrl as String).toList();
-              nameList = snapshot.data.map((m) => filmTitle(m.name)).toList();
+              nameList = snapshot.data.map((m) => filmTitle(m.name, Colors.white)).toList();
               dateList = snapshot.data.map((m) => Text(
                 'Khởi chiếu: '+ DateFormat('dd-MM-yyyy').format(DateTime.parse(m.premieredDay)),
                 style: TextStyle(color: Colors.brown[200],)))
@@ -102,7 +102,7 @@ class _ShowingState extends State<Showing> {
                     height: 50.0,
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 15.0, right: 15.0),
+                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                         child: Column(
                           children: <Widget>[
                             nameList[_current],

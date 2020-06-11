@@ -82,13 +82,9 @@ class _ListFilms extends State<FilmShowing> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  AutoSizeText(
-                                    data.name,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 3,
-                                  ),
-                                  Text(
+                                  
+                                  filmTitle(data.name, Colors.black),
+                                  Text('Khởi chiếu: '+
                                     DateFormat("dd/MM/yyyy").format(
                                       DateTime.parse(data.premieredDay),
                                     ),
@@ -97,6 +93,7 @@ class _ListFilms extends State<FilmShowing> {
                                       "_value_", data.duration.toString())),
                                   Row(
                                     children: <Widget>[
+                                      AutoSizeText('Định dạng '),
                                       AutoSizeText(
                                         data.versionCode,
                                         style: TextStyle(

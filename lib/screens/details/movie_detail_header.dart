@@ -51,7 +51,7 @@ class _MovieDetailHeaderState extends State<MovieDetailHeader> {
         //   widget.movie.name,
         //   style: textTheme.title,
         // ),
-        filmTitle(widget.movie.name),
+        filmTitle(widget.movie.name, Colors.white),
         SizedBox(height: 8.0),
         Row(children: [_buildCategoryChips(textTheme)]),
         Row(

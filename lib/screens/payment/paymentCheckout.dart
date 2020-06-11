@@ -47,13 +47,12 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   }
   Future onSelectPurchaseNotification(String payload) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var filmName = prefs.getString("movieName");
-    showDialog(
+    return showDialog(
       context: context,
       builder: (_) {
-        return new AlertDialog(
+        return AlertDialog(
           title: Text("Giao dịch thành công"),
-          content: Text('Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ${prefs.getString("seat")}, khung chiếu ${prefs.getString("time")} ngày ${prefs.getString('date')}',),
+          content: Text('Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ghế ${prefs.getString("seat")}, khung giờ ${prefs.getString("time")} ngày ${prefs.getString('date')}')
         );
       },
     );
@@ -418,7 +417,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     await flutterLocalNotificationsPluginAfterPurchase.show(
       0,
       'Giao dịch thành công',
-      'Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ${prefs.getString("seat")}, khung chiếu ${prefs.getString("time")} ngày ${prefs.getString('date')}',
+      'Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ghế ${prefs.getString("seat")}, khung giờ ${prefs.getString("time")} ngày ${prefs.getString('date')}',
       platformChannelSpecifics,
       payload: 'No_Sound',
     );

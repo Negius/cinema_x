@@ -175,7 +175,7 @@ class _BookingPageState extends State<BookingPage> {
                       ? Colors.grey
                       : Colors.black12)),
           onPressed: () async{//
-            String onDate = Text(DateFormat('dd-MM-yyyy').format(time["dateTimeFull"])).toString();
+            String onDate = DateFormat('dd-MM-yyyy').format(time["dateTimeFull"]).toString();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString('time', time["time"].toString());
             prefs.setString('date', onDate);

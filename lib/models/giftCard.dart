@@ -6,7 +6,7 @@ class GiftCard {
   // int id;
   String name;
   double price;
-  int point;
+  double point;
 
   GiftCard(
     {
@@ -21,7 +21,7 @@ class GiftCard {
       // id: json["Id"] as int,
       name: json["Name"] as String,
       price: json["Price"] as double,
-      point: json["Point"] as int
+      point: json["Point"] as double
     );
   }
 }
