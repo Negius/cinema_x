@@ -36,7 +36,7 @@ class _ShowingState extends State<Showing> {
   Widget build(BuildContext context) {
     return new Container(
       padding: EdgeInsets.only(top: 5),
-      color: Colors.black,
+      color: Color(0xFF222222),
       child: imgSlider(context),
     );
   }
@@ -102,7 +102,7 @@ class _ShowingState extends State<Showing> {
                     height: 50.0,
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                        padding: const EdgeInsets.only(top: 5, left: 15.0, right: 15.0),
                         child: Column(
                           children: <Widget>[
                             nameList[_current],

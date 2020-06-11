@@ -53,7 +53,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
       builder: (_) {
         return new AlertDialog(
           title: Text("Giao dịch thành công"),
-          content: Text("Phim :$filmName"),
+          content: Text('Bạn đã mua vé phim ${prefs.get("movieName")}, vị trí ${prefs.getString("seat")}, khung chiếu ${prefs.getString("time")} ngày ${prefs.getString('date')}',),
         );
       },
     );

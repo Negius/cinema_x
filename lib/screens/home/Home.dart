@@ -22,10 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final List imgSlider = [
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/b%c3%a0 hoàng nói dối.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/b%e1%ba%aby linh hồn.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/bloodshot2.jpg',
-    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/n%e1%ba%afng 3 (1).jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/sky.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/troll.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/thang6.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/toi%20la%20nao%20ca%20vang.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/images/can phong dam mau.jpg',
+    'https://chieuphimquocgia.com.vn/Themes/RapChieuPhim/Content/content.v2/ke%20truc%20dem.jpg',
   ];
   bool isLoggedIn = false;
   @override
