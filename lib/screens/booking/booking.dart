@@ -102,9 +102,11 @@ class _BookingPageState extends State<BookingPage> {
             initialIndex: 0,
             child: Scaffold(
               appBar: AppBar(
+                backgroundColor: Colors.red[900],
                 title: Text(widget.movie.name),
                 elevation: 26,
                 bottom: new TabBar(
+                  indicatorColor: Colors.orange,
                   tabs: dateList.map<Widget>((d) {
                     return new Container(
                       child: Text(

@@ -18,7 +18,7 @@ class _NewsDetailState extends State<NewsDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MenuBar(),
+      // endDrawer: MenuBar(),
       body: Stack(
         children: <Widget>[
           new Center(
@@ -54,7 +54,7 @@ class _NewsDetailState extends State<NewsDetail> {
             left: 0.0,
             right: 0.0,
             child: AppBar(
-              title: Text(widget.news.title),
+              title: Text(widget.news.title.toUpperCase(), style: TextStyle(fontSize: 18),),
               backgroundColor: Colors.red[900],
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),

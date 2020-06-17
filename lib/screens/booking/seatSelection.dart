@@ -92,8 +92,9 @@ class _SeatSelectionState extends State<SeatSelection> {
       scrollController = new ScrollController(
           initialScrollOffset: (width - MediaQuery.of(context).size.width) / 2);
     return Scaffold(
-//      backgroundColor: Colors.grey.shade200,
+    //  backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text(CommonString.selectSeat),
         elevation: 0,
       ),

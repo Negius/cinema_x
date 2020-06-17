@@ -35,6 +35,7 @@ class _PaymentIndexPageState extends State<PaymentIndexPage>{
       onWillPop: _cancelConfirm,
       child: Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: const Text('Thanh toán'),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: ()=>Navigator.pop(context)),
       ),

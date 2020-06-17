@@ -48,6 +48,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
        child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: Colors.red[900],
           title: Text(CommonString.checkout),
           centerTitle: true,
           leading: IconButton(
