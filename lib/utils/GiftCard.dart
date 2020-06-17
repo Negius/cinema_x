@@ -1,4 +1,5 @@
 import 'package:cinema_x/models/giftCard.dart';
+import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 
 class GiftCardPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _GiftCardPageState extends State<GiftCardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: MenuBar(),
+      endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text('Thẻ quà tặng'),

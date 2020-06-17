@@ -50,9 +50,9 @@ class _NotiListState extends State<NotiList> {
                 children: (snapshot.data as List<News>).map((data) {
                   return ListTile(
                     title: AutoSizeText(
-                                  data.title,
+                                  data.title.toUpperCase(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
-                                  maxLines: 2,
+                                  maxLines: 3,
                                 ),
                     trailing: Icon(Icons.arrow_right),
                     onTap: () {

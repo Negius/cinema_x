@@ -211,8 +211,8 @@ Diễn viên: _value2_
   static const String paymentNamePayoo = "Thanh toán online qua Payoo";
   static const String checkout = "Thanh toán";
   static const String accept = "Đồng ý";
-  static const String accept1 =
-      "Tôi đồng ý với Điều khoản Sử dụng và đang mua vé cho người có độ tuổi thích hợp";
+  // static const String accept1 =
+  //     "Tôi đồng ý với Điều khoản Sử dụng và đang mua vé cho người có độ tuổi thích hợp";
   static const String accept2 = "Tôi đồng ý và tiếp tục";
   static const String rating = "Đánh giá phim";
   static const String comment = "Nhận xét phim";

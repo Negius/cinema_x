@@ -66,7 +66,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             child: Column(
               children: [
                 MovieDetailHeader(
-                  movie: widget.movie,
+                  movie:  widget.movie,
                   expanded: () {
                     setState(() {
                       isExpanded = !isExpanded;

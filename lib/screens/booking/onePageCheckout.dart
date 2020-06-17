@@ -5,6 +5,8 @@ import 'package:cinema_x/models/Movie.dart';
 import 'package:cinema_x/screens/home/Home.dart';
 import 'package:cinema_x/screens/payment/paymentIndex.dart';
 import 'package:cinema_x/utils/menu_drawer.dart';
+import 'package:cinema_x/utils/termsofUse.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +46,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return WillPopScope(
        onWillPop: _cancelConfirm,
        child: Scaffold(
-        endDrawer: MenuBar(),
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text(CommonString.checkout),
@@ -57,12 +58,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
               // Navigator.pop(context);
             },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
-            )
-          ],
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: Icon(Icons.menu),
+          //     onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
+          //   )
+          // ],
         ),
         body: Column(
           children: <Widget>[
@@ -391,10 +392,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
         children: <Widget>[
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
-            child: AutoSizeText(
-              CommonString.accept1,
+            child: RichText(
               maxLines: 2,
-              minFontSize: 17,
+              // minFontSize: 17,
+              text: TextSpan(
+                style: TextStyle(fontSize: 17),
+                children: [
+                  TextSpan(text: 'Tôi đồng ý với '),
+                  TextSpan(text: 'Điều khoản Sử dụng',
+                           style: TextStyle(color: Colors.blue[600]),
+                           recognizer: TapGestureRecognizer()
+                              ..onTap = ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>TermsofUsePage()))),
+                  TextSpan(text:' và đang mua vé cho người có độ tuổi thích hợp')
+                ]
+              ),
             ),
           ),
           SizedBox(

@@ -44,6 +44,10 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     flutterLocalNotificationsPluginAfterPurchase = new FlutterLocalNotificationsPlugin();//
     flutterLocalNotificationsPluginAfterPurchase.initialize(initializationSettings,
         onSelectNotification: onSelectPurchaseNotification);
+
+    // flutterLocalNotificationsPluginReview = new FlutterLocalNotificationsPlugin();//
+    // flutterLocalNotificationsPluginReview.initialize(initializationSettings,
+    //     onSelectNotification: onSelectReviewNotification);
   }
   Future onSelectPurchaseNotification(String payload) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -214,7 +218,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future _scheduleNotification() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        '1', 'Schedule', 'your channel description',
         importance: Importance.High, priority: Priority.High);//
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
@@ -252,9 +256,6 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
                 print(data);
                 return errorScreen(context);
               }
-              // _paymentNoti.initialise(); //
-              // _showNotificationWithoutSound();
-              // _scheduleNotification();
               return resultScreen(context, data["data"]["txnId"],
                   data["code"], data["message"]);
             } else {
@@ -380,12 +381,8 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future<String> callApi(int code, int id) async {
     String api = NccUrl.updateOrder + "OrderId=$id&OrderCode=$code";
     var response = await http.post(api);
-    // _scheduleNotification();
     if (response.statusCode == 200) {
       _showNotificationWithoutSound();
-    //   flutterLocalNotificationsPluginAfterPurchase = new FlutterLocalNotificationsPlugin();//
-    // flutterLocalNotificationsPluginAfterPurchase.initialize(initializationSettings,
-    //     onSelectNotification: onSelectPurchaseNotification);
       // _scheduleNotification();
     }
     return response.body;
@@ -408,7 +405,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future _showNotificationWithoutSound() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        '0', 'After Purchase', 'your channel description',
         playSound: false, importance: Importance.Max, priority: Priority.High);
     var iOSPlatformChannelSpecifics =
         new IOSNotificationDetails(presentSound: false);

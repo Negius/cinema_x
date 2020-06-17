@@ -158,6 +158,26 @@ RichText filmTitle(name, color){
         ]
       ));
   }
+  if(name.toLowerCase().contains('dự kiến')){
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
+        children: [
+          TextSpan(text: name),
+        ]
+      ));
+  }
+  else{
+    return RichText(
+      maxLines: 2,
+      text: TextSpan(
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
+        children: [
+          TextSpan(text: name),
+        ]
+      ));
+  }
 }
 
 

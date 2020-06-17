@@ -87,10 +87,10 @@ class _ListNews extends State<ListAllNews> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   AutoSizeText(
-                                    data.title,
+                                    data.title.toUpperCase(),
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 2,
+                                    maxLines: 3,
                                   ),
                                 ],
                               ),
