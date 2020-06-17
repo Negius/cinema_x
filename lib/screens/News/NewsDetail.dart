@@ -28,6 +28,7 @@ class _NewsDetailState extends State<NewsDetail> {
                   EdgeInsets.only(top: 70, left: 10, right: 10, bottom: 10),
               child: SingleChildScrollView(
                 child: Html(
+                  defaultTextStyle: TextStyle(fontSize: 17),
                   data: widget.news.full,
                   padding: EdgeInsets.all(8.0),
                   onLinkTap: (url) {
@@ -59,12 +60,12 @@ class _NewsDetailState extends State<NewsDetail> {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
-                ),
-              ],
+              // actions: <Widget>[
+              //   IconButton(
+              //     icon: Icon(Icons.menu),
+              //     onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
+              //   ),
+              // ],
             ),
           ),
         ],

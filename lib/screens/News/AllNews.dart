@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cinema_x/config/AppSettings.dart';
 import 'package:cinema_x/models/News.dart';
 import 'package:cinema_x/screens/News/NewsDetail.dart';
+import 'package:cinema_x/utils/menu_drawer.dart';
 import 'package:flutter/material.dart';
 
 class ListAllNews extends StatefulWidget {
@@ -29,7 +30,7 @@ class _ListNews extends State<ListAllNews> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: MenuBar(),
+      endDrawer: MenuBar(),
       key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text(CommonString.news2),
