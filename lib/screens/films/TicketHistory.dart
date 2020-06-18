@@ -78,7 +78,7 @@ class TicketHistoryState extends State<TicketHistory> {
                                           fontWeight: FontWeight.bold),
                                       maxLines: 3,
                                     ),
-                                    Text(
+                                    Text('Ngày mua: ' +
                                       DateFormat("dd/MM/yyyy").format(
                                         DateTime.parse(data.buyCreatedOnUtc),
                                       ),

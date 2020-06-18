@@ -158,13 +158,15 @@ RichText filmTitle(name, color){
         ]
       ));
   }
-  if(name.toLowerCase().contains('dự kiến')){
+  if(name.toLowerCase().contains('- dự kiến')){
+    age = name.substring(name.length-7);
     return RichText(
       maxLines: 2,
       text: TextSpan(
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
         children: [
-          TextSpan(text: name),
+          TextSpan(text: name.substring(0, name.length-7)),
+          TextSpan(text: age, style: TextStyle(color: Colors.blue[100]))
         ]
       ));
   }

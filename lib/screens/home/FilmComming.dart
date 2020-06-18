@@ -42,7 +42,7 @@ class _ShowingState extends State<Comming> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             imgList = snapshot.data.map((m) => m.imageUrl as String).toList();
-            nameList = snapshot.data.map((m) => m.name as String).toList();
+            nameList = snapshot.data.map((m) => filmTitle(m.name, Colors.white)).toList();
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,10 +87,8 @@ class _ShowingState extends State<Comming> {
                 SizedBox(
                   height: 40.0,
                   child: Center(
-                    child: Text(
-                      nameList[_current],
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    ),
+                    child: 
+                      nameList[_current],  
                   ),
                 ),
               ],

@@ -480,8 +480,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
       var pr = parsed["PointReward"] as double;
       var pc = parsed["PointCard"] as double;
-      prefs.setDouble("pointReward", pr);
-      prefs.setDouble("pointCard", pc);
+      prefs.setDouble("pointReward", pr);//
+      prefs.setDouble("pointCard", pc);//
     }
     setState(() {
       user.fullName = prefs.getString("fullName");

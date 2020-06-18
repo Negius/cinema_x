@@ -73,7 +73,6 @@ class WatchedFilmState extends State<WatchedFilm> {
                   
                   children: (snapshot.data as List<Movie>).map((data) {
                     return GestureDetector(
-                      // => Navigator.push(context, MaterialPageRoute(builder: (context) => MovieDetailsPage(),)),
                         onTap: () {
                             Navigator.push(
                               context,
@@ -109,21 +108,12 @@ class WatchedFilmState extends State<WatchedFilm> {
                                           fontWeight: FontWeight.bold),
                                       maxLines: 3,
                                     ),
-                                    Text('Phim: '+ data.countryName),
+                                    Text('Phim '+ data.countryName),
                                     Text('Thể loại: ' + data.categories.map((c) => ReCase(c).sentenceCase).join(", ")),
-                                    Text('Ngày chiếu: ' +
+                                    Text('Khởi chiếu: ' +
                                       DateFormat("dd/MM/yyyy").format(
                                         DateTime.parse(data.premieredDay)
                                     )),
-                                    // Text(
-                                    //   DateFormat("dd/MM/yyyy").format(
-                                    //     DateTime.parse(data.buyCreatedOnUtc),
-                                    //   ),
-                                    // ),
-                                    // Text(CommonString.number.replaceAll(
-                                    //     "_value_", data.tickets.toString())),
-                                    // Text(CommonString.seats.replaceAll(
-                                    //     "_value_", data.listChairValue)),
                                     RaisedButton(
                                       onPressed: ()=>getFilmId(),
                                       child: Text('Đánh giá'),)

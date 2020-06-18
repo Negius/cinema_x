@@ -537,8 +537,8 @@ class _MenuBarState extends State<MenuBar> {
 
       var pr = parsed["PointReward"] as double;
       var pc = parsed["PointCard"] as double;
-      prefs.setDouble("pointReward", pr);
-      prefs.setDouble("pointCard", pc);
+      prefs.setDouble("pointReward", pr);//
+      prefs.setDouble("pointCard", pc);//
     }
   }
 }

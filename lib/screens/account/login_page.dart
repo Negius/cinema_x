@@ -240,8 +240,8 @@ class _LoginPageState extends State<LoginPage> {
     prefs.setString("firstName", user.firstName);
     prefs.setString("lastName", user.lastName);
     prefs.setInt("customerId", user.id);
-    prefs.setDouble("pointReward", user.pointReward);
-    prefs.setDouble("pointCard", user.pointCard);
+    prefs.setDouble("pointReward", user.pointReward);//
+    prefs.setDouble("pointCard", user.pointCard);//
     prefs.setString("email", user.email);
     prefs.setString("phone", user.phoneNumber);
     prefs.setString("cardCode", user.cardCode);

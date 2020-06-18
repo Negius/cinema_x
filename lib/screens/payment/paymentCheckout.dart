@@ -381,7 +381,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future<String> callApi(int code, int id) async {
     String api = NccUrl.updateOrder + "OrderId=$id&OrderCode=$code";
     var response = await http.post(api);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && code==00) {
       _showNotificationWithoutSound();
       // _scheduleNotification();
     }
