@@ -381,7 +381,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
   Future<String> callApi(int code, int id) async {
     String api = NccUrl.updateOrder + "OrderId=$id&OrderCode=$code";
     var response = await http.post(api);
-    if (response.statusCode == 200 && code==00) {
+    if (response.statusCode == 200 && code!=24) {
       _showNotificationWithoutSound();
       // _scheduleNotification();
     }
@@ -406,7 +406,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '0', 'After Purchase', 'your channel description',
-        playSound: false, importance: Importance.Max, priority: Priority.High);
+        playSound: false, importance: Importance.High, priority: Priority.High);
     var iOSPlatformChannelSpecifics =
         new IOSNotificationDetails(presentSound: false);
     var platformChannelSpecifics = new NotificationDetails(
