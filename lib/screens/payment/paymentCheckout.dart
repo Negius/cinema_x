@@ -383,7 +383,7 @@ class _PaymentCheckoutPageState extends State<PaymentCheckoutPage> {
     var response = await http.post(api);
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body);
-      if (parsed.code == 00){
+      if (parsed['code'] == '00'){
         _showNotificationWithoutSound();}
       // _scheduleNotification();
     }
